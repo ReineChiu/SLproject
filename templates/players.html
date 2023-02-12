@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% load static %}
+
+{% block static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/players.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<main>
+    <div class="information">
+        <div class="info-card">
+            <div class="info-card-two">
+                <div class="info-card-three">
+                    <div class="card-body">
+                        <div class="team"></div>
+                        <div class="player">
+                            <div class="name"></div>
+                            <div class="num"></div>                  
+                        </div>
+                        <div class="other-info"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="diagram">
+        <div class="radar_box" style="position: relative; height:280px; width:280px">
+            <canvas id="pitcher"></canvas>
+        </div>
+    </div>
+    <div class="digital">
+        <div class="dig-box">
+            <table class="table table-striped">
+                <thead>
+                <tr></tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/players.js' %}"></script>
+{% endblock %}

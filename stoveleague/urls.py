@@ -1,0 +1,34 @@
+"""stoveleague URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path, re_path
+
+# from message.views import message, uploadFile, getFile
+from standings.views import standings, getPosData, getPlayerInfo, getplayer, Players#, players_name
+from teams.views import teams, getTeams
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', standings),
+    # path('api/getIndex', getIndex),
+    path('api/getplayer', getplayer),
+    path('players/<int:_id>', Players),
+    path('api/getPosData', getPosData),
+    path('api/getPlayerInfo', getPlayerInfo),
+    path('teams', teams),
+    path('api/getTeams', getTeams)
+]
+
