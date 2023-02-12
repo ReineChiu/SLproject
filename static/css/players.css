@@ -1,0 +1,134 @@
+:root {
+    --color-white: #FFFFFF;
+    --color-gary: #CCCCCC;
+    --color-sky1: #2682a6;
+    --color-sky2: #6BB0BF;
+    --color-darkgary: #555353;
+    --color-green1: #6e8c03;
+    --color-green2: rgb(90, 115, 2);
+    --color-green3: rgb(79, 89, 2);
+    --color-hr: #E8E8E8E8;
+    --color-background: #f2f2f278;
+    --color-red: #aa0808;
+    --color-brothers:rgb(242, 226, 5);
+    --color-brothers2:rgb(197, 188, 62);
+    --color-monkeys:rgb(168, 3, 8);
+    --color-guardians:rgb(3, 102, 207);
+    --color-dragons:rgb(249, 26, 26);
+    --color-lions:rgb(242, 112, 5);
+    --color-navy: rgb(29, 46, 93);
+    --color-bred: rgb(213, 31, 67);
+    --color-begie: rgb(231, 212, 139);
+    --color-none: rgb(143, 194, 63);
+}
+
+main{
+    display:block;
+    /* justify-content: center;
+    align-items: center; */
+}
+
+.information{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.info-card{
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    width: 1170px;
+    margin: 50px 0 20px 0 ;
+    border:5px solid var(--color-navy);
+    border-radius: 10px;
+    background-color: var(--color-navy);
+}
+.info-card-two{
+    width: 1150px;
+    padding: 8px 10px 8px 10px;
+    border:3px solid var(--color-white);
+    border-radius: 10px;
+}
+.info-card-three{
+    border-radius: 10px;
+    background-color: var(--color-begie);
+}
+.card-body{
+    display: block;
+    padding: 10px 10px 10px 10px;
+    /* color:var(--color-white); */
+}
+.team{
+    padding: 0 0 0 15px; 
+}
+.player{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 10px 10px 10px 10px;
+}
+.name{
+    font-size: 36px;
+}
+.num{
+    font-size: 26px;
+    margin: 0 30px 0 30px;
+
+}
+.other-info{
+    display: flex;
+    flex-wrap: wrap;
+    width:1100px;
+}
+.box{
+    display: block;
+    width:220px;
+    padding:0 10px 20px 10px ;
+}
+.box-title{
+    font-size: 14px;
+    color:var(--color-darkgary);
+}
+
+
+
+
+
+.radar_box{
+    margin: 20px 0 20px 120px ;
+    /* border: 3px solid var(--color-white);
+    border-radius: 5px; */
+}
+/* .row-border{
+    border: 1px solid var(--color-darkgary);
+} */
+.digital {
+    display: flex;
+    justify-content: center;
+   
+    /* font-size: 10px; */
+}
+.dig-box{
+    width:1200px;
+    margin: 0 50px 0 50px;
+
+}
+table {
+    border: 2px solid var(--color-white)!important;
+    font-size: 10px;
+    /* font-weight: 700; */
+}
+
+tr {
+    border: 0.5px solid var(--color-darkgary);
+}
+/* th {
+    height: 90px;
+} */
+td {
+    font-size: 10px;
+    height: 30px;
+}
+.center-align {
+    text-align: center;
+}
