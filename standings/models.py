@@ -45,18 +45,18 @@ class Pitcher(models.Model):
     Runs = models.SmallIntegerField()
     ER = models.SmallIntegerField()
     BB = models.SmallIntegerField()
-    IBB = models.CharField(max_length=10)
+    IBB = models.SmallIntegerField()
     DB = models.SmallIntegerField()
     SO = models.SmallIntegerField()
     WP = models.SmallIntegerField()
     BK = models.SmallIntegerField()
     WHIP = models.FloatField()
-    BA = models.FloatField()
+    # BA = models.FloatField()
     GB_FB = models.FloatField()
-    K_BB = models.FloatField()
-    K9 = models.FloatField()
-    B9 = models.FloatField()
-    H9 = models.FloatField()
+    GB = models.SmallIntegerField(default=0)
+    FB = models.SmallIntegerField(default=0)
+    NO_BB = models.SmallIntegerField(default=0)
+    BS = models.SmallIntegerField(default=0)
 
     all_player = models.ForeignKey(
             All_player, on_delete=models.CASCADE, related_name='pitcher', 
@@ -81,7 +81,7 @@ class Fielder(models.Model):
     TB = models.SmallIntegerField()
     EBH = models.SmallIntegerField()
     BB = models.SmallIntegerField()
-    IBB = models.CharField(max_length=10)
+    IBB = models.SmallIntegerField()
     DB = models.SmallIntegerField()
     SO = models.SmallIntegerField()
     DP = models.SmallIntegerField()
@@ -93,7 +93,10 @@ class Fielder(models.Model):
     SLG = models.FloatField()
     OPS = models.FloatField()
     GB_FB = models.FloatField()
-    BB_K = models.FloatField()
+    # BB_K = models.FloatField()
+    GB = models.SmallIntegerField(default=0)
+    FB = models.SmallIntegerField(default=0)
+    SBP = models.FloatField(default=0.0)
 
     all_player = models.ForeignKey(
             All_player, on_delete=models.CASCADE, related_name='fielder', 

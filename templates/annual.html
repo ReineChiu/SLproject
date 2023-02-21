@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% load static %}
+
+{% block static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/annual.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+    {% csrf_token %}
+    <div class="choose-bar">
+        <div class="choose-btn">
+            <button type="button" class="btn btn-outline-secondary annual-pos" data-pos="field">打者</button>
+            <button type="button" class="btn btn-outline-secondary annual-pos" data-pos="pitch">投手</button>
+        </div>
+        <div class="annual-btn">
+            <div class="dropdown">
+                <div class="dropdown-year"></div>
+                <div class="icon"><div class="dropdown-toggle"></div></div>
+            </div>
+            <div class="dropdown-year-box"></div>
+        </div>
+    </div>
+    <div class="annual-digital">   
+        <div class="annual-box">
+            <table class="table table-striped">
+                <thead>
+                    <tr></tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="chart-box">
+        <div class="chart-frame">
+            <div class="line">
+                <canvas id="myChart1"></canvas>
+            </div>
+            <div class="line">
+                <canvas id="myChart2"></canvas>
+            </div>
+            <!-- <div class="line">
+                <canvas id="myChart3"></canvas>
+            </div> -->
+        </div>
+    </div> 
+</main>
+
+
+<script src="{% static 'js/annual.js' %}"></script>
+{% endblock %}

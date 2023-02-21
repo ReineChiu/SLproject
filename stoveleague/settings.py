@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'standings',
     'teams',
+    'annual',
 ]
 
 MIDDLEWARE = [
@@ -85,28 +86,28 @@ WSGI_APPLICATION = 'stoveleague.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 # 資料庫改設定為 mysql
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'django',#os.getenv("LOCAL_DATABASE_NAME"), # database Name
-#         'USER': os.getenv("LOCAL_USERNAME"),  # mysql 使用者名稱
-#         'PASSWORD': os.getenv("LOCAL_PASSWORD"),  # 資料庫的密碼
-#         'HOST': os.getenv("LOCAL_HOST"),  # 資料庫服務地址， 這裡我們是測試開發 填本地地址 
-#         'PORT': '3306',   # mysql 對應的埠號 
-#         'default-character-set': "UTF8",  # 設定編碼規則 utf8 
-#     }
-# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django',#os.getenv("LOCAL_DATABASE_NAME"), # database Name
-        'USER': os.getenv("RDS_USERNAME"),  # mysql 使用者名稱
-        'PASSWORD': os.getenv("RDS_PASSWORD"), # 資料庫的密碼
-        'HOST': os.getenv("RDS_HOST"), # 資料庫服務地址， 這裡我們是測試開發 填本地地址 
+        'USER': os.getenv("LOCAL_USERNAME"),  # mysql 使用者名稱
+        'PASSWORD': os.getenv("LOCAL_PASSWORD"),  # 資料庫的密碼
+        'HOST': os.getenv("LOCAL_HOST"),  # 資料庫服務地址， 這裡我們是測試開發 填本地地址 
         'PORT': '3306',   # mysql 對應的埠號 
         'default-character-set': "UTF8",  # 設定編碼規則 utf8 
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'django',#os.getenv("LOCAL_DATABASE_NAME"), # database Name
+#         'USER': os.getenv("RDS_USERNAME"),  # mysql 使用者名稱
+#         'PASSWORD': os.getenv("RDS_PASSWORD"), # 資料庫的密碼
+#         'HOST': os.getenv("RDS_HOST"), # 資料庫服務地址， 這裡我們是測試開發 填本地地址 
+#         'PORT': '3306',   # mysql 對應的埠號 
+#         'default-character-set': "UTF8",  # 設定編碼規則 utf8 
+#     }
+# }
 
 
 # Password validation
@@ -167,11 +168,11 @@ AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = False  #同名檔案是否要覆寫
 AWS_DEFAULT_ACL = None
 
-# CORS
-CORS_ALLOW_ALL_ORIGINS = True
+# # CORS
+# CORS_ALLOW_ALL_ORIGINS = True
 
-# CSRF Token
-CSRF_COOKIE_DOMAIN = '.stoveleague.online'
-CSRF_TRUSTED_ORIGINS = [
-    'https://*.stoveleague.online'
-]
+# # CSRF Token
+# CSRF_COOKIE_DOMAIN = '.stoveleague.online'
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://*.stoveleague.online'
+# ]

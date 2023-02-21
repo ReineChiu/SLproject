@@ -1,26 +1,80 @@
 let path = window.location.pathname; 
 
-const player = document.getElementById('pitcher');
+// ============== 建立 環形圖 函式 =============== //
+const doughnutChart = document.getElementById('doughnut');
+const createDoughnutChart = (ctx, data) => {
+    const config = {
+      type: 'doughnut',
+      data: data,
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero:true
+            }
+          }]
+        }
+      }
+    };
+    return new Chart(ctx, config);
+}
+// ============== 建立 折線圖 函式 =============== //
+const lineChart = document.getElementById('line');
+const createChart = (chartType, chartData, chartOptions, chartElement) => {
+    const config = {
+      type: chartType,
+      data: chartData,
+      options: chartOptions
+    };
+    const chart = new Chart(chartElement, config);
+    return chart;
+}
 
-// const table = document.getElementById('data-table');
-const table = document.querySelector(".table") //定位表格
-const headTr = table.querySelector("thead tr");
-const tbody = table.querySelector("tbody");
+// =========== 建立 table 函式 ============= //
+const createTable = (posCol, allPosRows) =>{
+    const table = document.querySelector(".table") //定位表格
+    const headTr = table.querySelector("thead tr");
+    const tbody = table.querySelector("tbody");
 
+    posCol.forEach(item =>{
+        const headTh = document.createElement("th");
+        // Create a new column 
+        headTh.textContent = item;
+        // headTh.classList.add("column");
+        headTr.appendChild(headTh);
+        
+    })
+    allPosRows.forEach((item, index) => {
+        const newRow = document.createElement("tr");
+        item.forEach((col, colIndex) => {
+            const newTD = document.createElement("td");
+            newTD.textContent = col;
+            // if (colIndex === 0){
+            //     newTD.classList.add("name");
+            // }else{
+            //     newTD.classList.add("column");
+            // }               
+            newRow.appendChild(newTD);
+        });
+        tbody.appendChild(newRow);
+    });
+    table.classList.add("center-align");
+    return table;
+}
 
-
-// Chart.defaults.global.defaultFontSize = 14;
-
-const pitchCol = ["年份","球隊","出賽數","先發","救援","完投","完封","勝場","敗場","救援成功","中繼成功","打席",
-                "投球數","投球局數","被安打","被全壘打","失分","自責分","四壞","(故四)","死球","奪三振",
-                "暴投","投手犯規"]
+const pitchCol = ["年份","球隊","出賽數","防禦率","被上壘率","先發","救援","完投","完封","勝場","敗場","救援成功",
+                "救援失敗","中繼成功","打席","投球數","投球局數","被安打","被全壘打","失分","自責分","四壞","故意四壞",
+                "奪三振","無四死球","暴投","投手犯規","滾地出局","高飛出局"
+                ]
+                
 // console.log(pitchCol.length)
 
 const fieldCol = ["年份","球隊","出賽數","打擊率","上壘率","長打率","打席","打數","打點","得分","安打","一安","二安",
-                "三安","全壘打","壘打數","四壞","(故四)","死球","被三振","雙殺打","犧短","犧飛","盜壘",
-                "盜壘刺"]
+                "三安","全壘打","壘打數","四壞","故意四壞","被三振","雙殺打","犧短","犧飛","盜壘","盜壘刺","盜壘率",
+                "滾地出局","高飛出局"
+                ]
 // console.log(fieldCol.length)
-
 
 fetch(path,{
     method:"GET",
@@ -31,158 +85,309 @@ fetch(path,{
 }).then((response) =>
     response.json()
 ).then((data) => {
-    // console.log(data.data)
-    // console.log(typeof data.data[0])
-
     const info = data.data;
     // console.log(info)
+    if (info[0].retire == "非現役") {
+        const retireImage = document.querySelector(".retire");
+        const retireImg = document.createElement("img");
+        retireImg.src = "https://d2pr862w3j3gq8.cloudfront.net/stoveleague/retire.png";
+        retireImg.classList.add("retireimage")
+        retireImage.appendChild(retireImg)
+    }
     const playerTeam = document.querySelector(".team");
     const playerName = document.querySelector(".name");
     const playerNum = document.querySelector(".num");
+    const playerOname = document.querySelector(".o-name");
+    
     playerTeam.textContent = info[0].team;
     playerName.textContent = info[0].player_name;
     playerNum.textContent = info[0].num;
+    playerOname.textContent = info[0].o_name;
+    
+    const latestYear = document.querySelector(".latest-year");
+    const data1 = document.querySelector(".data1");
+    const data2 = document.querySelector(".data2");
+    const data3 = document.querySelector(".data3");
 
-    const boxTitleData = ["守備位置","投打習慣","身高/體重","生日","初次登場","學歷",
-                            "國籍","原名","選秀順位","狀態"]
-    const boxContentData = [info[0].pos,info[0].habits,info[0].height+"/"+info[0].weight,
-                            info[0].birthday,info[0].debut,info[0].AQ,info[0].Country,
-                            info[0].o_name,info[0].draft,info[0].retire]
+    document.title = info[0].player_name + "("+info[0].team+")";
+
+    const boxTitleData = ["守備位置","投打習慣","學歷",
+                        "國籍","生日","初次登場","身高/體重","選秀順位"]
+    const boxContentData = [info[0].pos,info[0].habits,info[0].AQ,info[0].Country,
+                            info[0].birthday,info[0].debut,
+                            info[0].height+"公分"+"/"+info[0].weight+"公斤",info[0].draft]
 
     const playerOtherInfo = document.querySelector(".other-info");
     
     for (let i = 0; i<boxTitleData.length; i++){
         const box = document.createElement("div");
-
+        const boxBar = document.createElement("div");
         const boxTitle = document.createElement("div");
         boxTitle.textContent = boxTitleData[i];
         boxTitle.classList.add("box-title");
-        box.appendChild(boxTitle)
+        boxBar.appendChild(boxTitle)
 
         const boxContent = document.createElement("div");
         boxContent.textContent = boxContentData[i];
-        box.appendChild(boxContent)
-
+        boxContent.classList.add("box-content")
+        boxBar.classList.add("box-bar");
         box.classList.add("box");
+
+        boxBar.appendChild(boxContent);
+        box.appendChild(boxBar);
         playerOtherInfo.appendChild(box);
     }
     
-    // const pitchObj = [info[0].pitcher__ERA, info[0].pitcher__WHIP, info[0].pitcher__GB_FB]
-    // const fieldObj = [info[0].fielder__AVG, info[0].fielder__OBP, info[0].fielder__SLG]
+    let pitchBBtotal = 0;
+    let pitchIBBtotal = 0;
+    let pitchSOtotal = 0;
 
     const allPitchRows = [];
-    for (let i = 0; i < info.length; i++) {
-        const pitchRow = [
-            info[i].pitcher__year,info[i].pitcher__team,info[i].pitcher__GP,info[i].pitcher__GS,info[i].pitcher__GF,info[i].pitcher__CG,info[i].pitcher__SHO,info[i].pitcher__Win,
-            info[i].pitcher__Lose,info[i].pitcher__SV,info[i].pitcher__HLD,info[i].pitcher__PA,info[i].pitcher__PC,info[i].pitcher__IP,info[i].pitcher__Hits,info[i].pitcher__HR,info[i].pitcher__Runs,
-            info[i].pitcher__ER,info[i].pitcher__BB,info[i].pitcher__IBB,info[i].pitcher__DB,info[i].pitcher__SO,info[i].pitcher__WP,info[i].pitcher__BK,info[i].pitcher__BA
-            
-        ]
-    allPitchRows.push(pitchRow)
-    }
-
-    const allFieldRows = [];
+    const pitchYear = []
+    const eraList = []
+    const whipList = []
 
     info.forEach(item =>{
-        const fieldRow = [
-            item.fielder__year,item.fielder__team,item.fielder__GP,item.fielder__AVG,item.fielder__OBP,item.fielder__SLG,item.fielder__PA,item.fielder__AB,item.fielder__RBI,
-            item.fielder__Runs,item.fielder__Hits,item.fielder__one_base,item.fielder__two_base,item.fielder__three_base,item.fielder__HR,
-            item.fielder__TB,item.fielder__EBH,item.fielder__BB,item.fielder__IBB,item.fielder__DB,item.fielder__SO,item.fielder__DP,item.fielder__SBH,
-            item.fielder__SF,item.fielder__SB,item.fielder__CS
+        pitchBBtotal += item.pitcher__BB;
+        pitchIBBtotal += item.pitcher__IBB;
+        pitchSOtotal += item.pitcher__SO;
+        pitchYear.unshift(item.pitcher__year)
+        eraList.unshift(item.pitcher__ERA)
+        whipList.unshift(item.pitcher__WHIP)
+
+        const pitchRow = [
+            item.pitcher__year,item.pitcher__team,item.pitcher__GP,item.pitcher__ERA,item.pitcher__WHIP,
+            item.pitcher__GS,item.pitcher__GF,item.pitcher__CG,item.pitcher__SHO,item.pitcher__Win,
+            item.pitcher__Lose,item.pitcher__SV,item.pitcher__BS,item.pitcher__HLD,item.pitcher__PA,
+            item.pitcher__PC,item.pitcher__IP,item.pitcher__Hits,item.pitcher__HR,item.pitcher__Runs,
+            item.pitcher__ER,item.pitcher__BB,item.pitcher__IBB,item.pitcher__SO,item.pitcher__NO_BB,
+            item.pitcher__WP,item.pitcher__BK,item.pitcher__GB,item.pitcher__FB   
         ]
-    allFieldRows.push(fieldRow);
+    allPitchRows.push(pitchRow)
     })
 
-    if (info[0].pos == "投手"){
-        const picher = new Chart(player, {
-            type:'radar',
-            data: {
-                labels: ['防禦率', '被上壘率', '滾飛出局比'],
-            datasets: [{
-                label: info[0].pitcher__year,
-                data: [info[0].pitcher__ERA, info[0].pitcher__WHIP, info[0].pitcher__GB_FB],
-                backgroundColor: 'rgba(213, 31, 67, 0.2)',
-                borderColor:'rgba(213, 31, 67)',
-                borderWidth: 1,
-                pointStyle: "cross"
-                // fill:false //中間區塊是否填色
-                },{
-                    label: info[1].pitcher__year,
-                    data: [info[1].pitcher__ERA, info[1].pitcher__WHIP, info[1].pitcher__GB_FB],
-                    backgroundColor: 'rgba(29, 46, 93, 0.2)',
-                    borderColor:'rgba(29, 46, 93)',
-                    borderWidth: 1,
-                    pointStyle: "cross"
-                    // fill:false //中間區塊是否填色
-                    }]
-            }
-            // options: {
-            //     scale: {
-            //         display: false
-            //     }
-            // }
-        });
+    let fieldOBtotal = 0;
+    let fieldTBtotal = 0;
+    let fieldTHBtotal = 0;
+    let fieldHRtotal = 0 ;
 
-        
-        for (let i = 0; i < pitchCol.length; i++) {
-            // Create a new column 
-            const headTh = document.createElement("th");
-            headTh.textContent = pitchCol[i];
-            headTr.appendChild(headTh)
-        }
-        for (let i = 0; i < allPitchRows.length; i++) {
-            const newRow = document.createElement("tr");
-            // console.log(allFieldRows[0])
-            for (let j = 0; j < pitchCol.length; j++) {
-                const newTD = document.createElement("td");
-                newTD.textContent = allPitchRows[i][j];
-                newRow.appendChild(newTD);
+    const allFieldRows = [];
+    const fieldYear = [];
+    const avgList = [];
+    const obpList = [];
+    const slgList = []
+
+    info.forEach(item =>{
+        fieldOBtotal += item.fielder__one_base;
+        fieldTBtotal += item.fielder__two_base;
+        fieldTHBtotal += item.fielder__three_base;
+        fieldHRtotal += item.fielder__HR;
+        fieldYear.unshift(item.fielder__year);
+        avgList.unshift(item.fielder__AVG);
+        obpList.unshift(item.fielder__OBP);
+        slgList.unshift(item.fielder__SLG);
+
+        const fieldRow = [
+            item.fielder__year,item.fielder__team,item.fielder__GP,item.fielder__AVG,item.fielder__OBP,
+            item.fielder__SLG,item.fielder__PA,item.fielder__AB,item.fielder__RBI,item.fielder__Runs,
+            item.fielder__Hits,item.fielder__one_base,item.fielder__two_base,item.fielder__three_base,
+            item.fielder__HR,item.fielder__TB,item.fielder__BB,item.fielder__IBB,item.fielder__SO,
+            item.fielder__DP,item.fielder__SBH,item.fielder__SF,item.fielder__SB,item.fielder__CS,
+            item.fielder__SBP,item.fielder__GB,item.fielder__FB
+        ]
+
+    allFieldRows.push(fieldRow);
+    })
+    if (info[0].pos == "投手"){
+        latestYear.textContent = info[0].pitcher__year;
+        const data1UpText = document.createElement("div");
+        const data2UpText = document.createElement("div");
+        const data3UpText = document.createElement("div");
+        const data1DownText = document.createElement("div");
+        const data2DownText = document.createElement("div");
+        const data3DownText = document.createElement("div");
+        data1UpText.textContent = "K9值";
+        data2UpText.textContent = "B9值";
+        data3UpText.textContent = "H9值";
+        data1UpText.classList.add('data-title');
+        data2UpText.classList.add('data-title');
+        data3UpText.classList.add('data-title');
+        data1DownText.textContent = ((info[0].pitcher__SO/info[0].pitcher__IP)*9).toFixed(3);
+        data2DownText.textContent = ((info[0].pitcher__BB/info[0].pitcher__IP)*9).toFixed(3);
+        data3DownText.textContent = ((info[0].pitcher__Hits/info[0].pitcher__IP)*9).toFixed(3);
+        data1DownText.classList.add('data-content');
+        data2DownText.classList.add('data-content');
+        data3DownText.classList.add('data-content');
+
+        data1.appendChild(data1UpText);
+        data1.appendChild(data1DownText);
+        data2.appendChild(data2UpText);
+        data2.appendChild(data2DownText);
+        data3.appendChild(data3UpText);
+        data3.appendChild(data3DownText);
+
+        const posImage = document.querySelector(".image-box");
+        const Im = document.createElement("img");
+        // Im.src = "/static/images/pitch.png";
+        Im.src = "https://d2pr862w3j3gq8.cloudfront.net/stoveleague/pitch.png";
+        Im.classList.add("pitchimage")
+        posImage.appendChild(Im)
+
+        // ============== 環形圖 =============== //
+        pitchData = {
+            labels: [
+                '四壞',
+                '故意四壞',
+                '奪三振',
+            ],
+            datasets: [{
+                label: "歷年累計",
+                data: [pitchBBtotal,pitchIBBtotal,pitchSOtotal],
+                backgroundColor: [
+                'rgb(143, 194, 30)',
+                'rgb(29, 46, 93)',
+                'rgb(213, 31, 32)',
+                ],
+                hoverOffset: 4,
+                borderWidth: 0,
+            }]
+            };
+        const pitchDoughnutChart = createDoughnutChart(doughnutChart, pitchData);
+
+        // ============== 折線圖 =============== //
+        const pitchLineData = {
+            labels : pitchYear,
+            datasets: [{
+                label: '防禦率',
+                data: eraList,
+                fill: false,
+                borderColor: 'rgb(213, 31, 67)', // 设置线的颜色
+                backgroundColor: 'rgb(213, 31, 67)',
+                tension: 0.1
+            },{
+                label: '被上壘率',
+                data: whipList,
+                fill: true,
+                borderColor: 'rgb(255, 255, 255)', // 设置线的颜色
+                backgroundColor: 'rgb(255, 255, 255, 0.2)',
+                borderWidth: 1,
+                tension: 0.1
+            }]
+        };
+        const pitchLineOptions = {
+            responsive: true,
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
             }
-            tbody.appendChild(newRow);
-        }
-        table.classList.add("center-align");
+          };
+        const pitchChart = createChart('line', pitchLineData, pitchLineOptions, lineChart);
+        
+        // ============== 數值欄位化 =============== //
+        createTable(pitchCol, allPitchRows);
          
     }else{// 如果不是投手
-        const fielder = new Chart(player, {
-            type:'radar',
-            data: {
-                labels: ['打擊率', '上壘率','長打率'],
-            datasets: [{
-                label: info[0].fielder__year,
-                data: [info[0].fielder__AVG, info[0].fielder__OBP, info[0].fielder__SLG],
-                backgroundColor: 'rgba(213, 31, 67, 0.2)',
-                borderColor:'rgba(213, 31, 67)',
-                borderWidth: 1,
-                pointStyle: "cross"
-                // fill:false //中間區塊是否填色
-                },{
-                label: info[1].fielder__year,
-                data: [info[1].fielder__AVG, info[1].fielder__OBP, info[1].fielder__SLG],
-                backgroundColor: 'rgba(29, 46, 93, 0.2)',
-                borderColor:'rgba(29, 46, 93)',
-                borderWidth: 1,
-                pointStyle: "cross"
-                }]  
-            }  
-        })
-        for (let i = 0; i < fieldCol.length; i++) {
-            // Create a new column 
-            const headTh = document.createElement("th");
-            headTh.textContent = fieldCol[i];
-            headTr.appendChild(headTh)
-        }
+        latestYear.textContent = info[0].fielder__year;
+        const data1UpText = document.createElement("div");
+        const data1DownText = document.createElement("div");
+        const data2UpText = document.createElement("div");
+        const data2DownText = document.createElement("div");
+        const data3UpText = document.createElement("div");
+        const data3DownText = document.createElement("div");
+        data1UpText.textContent = "攻擊指數";
+        data2UpText.textContent = "被三振率";
+        data3UpText.textContent = "得四壞率";
+        data1UpText.classList.add('data-title');
+        data2UpText.classList.add('data-title');
+        data3UpText.classList.add('data-title');
+        data1DownText.textContent = (info[0].fielder__SLG+info[0].fielder__OBP).toFixed(3);
+        data2DownText.textContent = (info[0].fielder__SO/info[0].fielder__PA).toFixed(3);
+        data3DownText.textContent = (info[0].fielder__BB/info[0].fielder__PA).toFixed(3);
+        data1DownText.classList.add('data-content');
+        data2DownText.classList.add('data-content');
+        data3DownText.classList.add('data-content');
+        data1.appendChild(data1UpText);
+        data1.appendChild(data1DownText);
+        data2.appendChild(data2UpText);
+        data2.appendChild(data2DownText);
+        data3.appendChild(data3UpText);
+        data3.appendChild(data3DownText);
 
-        for (let i = 0; i < allFieldRows.length; i++) {
-            const newRow = document.createElement("tr");
-            // console.log(allFieldRows[0])
-            for (let j = 0; j < fieldCol.length; j++) {
-                const newTD = document.createElement("td");
-                newTD.textContent = allFieldRows[i][j];
-                newRow.appendChild(newTD);
+        const posImage = document.querySelector(".image-box");
+        const Im = document.createElement("img");
+        Im.src = "https://d2pr862w3j3gq8.cloudfront.net/stoveleague/bat.png";
+        Im.classList.add("fieldimage")
+        posImage.appendChild(Im)
+    
+        // ============== 折線圖 =============== //
+        const fieldLineData = {
+            labels : fieldYear,
+            datasets: [{
+                label: '打擊率',
+                data: avgList,
+                fill: false,
+                borderColor: 'rgb(213, 31, 67)', // 设置线的颜色
+                backgroundColor: 'rgb(213, 31, 67)',
+                tension: 0.1
+            },{
+                label: '長打率',
+                data: slgList,
+                fill: false,
+                borderColor: 'rgb(29, 46, 93)', // 设置线的颜色
+                backgroundColor: 'rgb(29, 46, 93)',
+                borderWidth: 1,
+                tension: 0.1
+            },{
+                label: '上壘率',
+                data: obpList,
+                fill: true,
+                borderColor: 'rgb(255, 255, 255)', // 设置线的颜色
+                backgroundColor: 'rgb(255, 255, 255, 0.2)',
+                borderWidth: 1,
+                tension: 0.1
+            }]
+        };
+        const fieldLineOptions = {
+            responsive: true,
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
             }
-            tbody.appendChild(newRow);
-        }
-        table.classList.add("center-align");
+          };
+        const fieldChart = createChart('line', fieldLineData, fieldLineOptions, lineChart);
+
+        // ============== 環形圖 =============== //
+        const fieldData = {
+            labels: [
+              '一安',
+              '二安',
+              '三安',
+              '全壘打'
+            ],
+            datasets: [{
+              label: "歷年累計",
+              data: [fieldOBtotal,fieldTBtotal,fieldTHBtotal,fieldHRtotal],
+              backgroundColor: [
+                'rgb(143, 194, 30)',
+                'rgb(29, 46, 93)',
+                'rgb(213, 31, 32)',
+                'rgb(255, 255, 255)',
+              ],
+              hoverOffset: 4,
+              borderWidth: 0,
+            }]
+          };
+
+        const fieldDoughnutChart = createDoughnutChart(doughnutChart, fieldData);
+
+        // ============== 數值欄位化 =============== //
+        createTable(fieldCol, allFieldRows);
     }
 
 })

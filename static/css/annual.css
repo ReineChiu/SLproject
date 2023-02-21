@@ -1,0 +1,123 @@
+.choose-bar{
+    display: flex;
+    justify-content: center;
+    margin:20px 0 0 0;
+}
+.annual-pos{
+    border-radius: 10px;
+    border-color: var(--color-navy)!important;
+    padding: 20px 50px 20px 50px;
+    margin: 0 10px 0 0;
+    --bs-btn-color:var(--color-navy)!important;
+    --bs-btn-hover-bg:var(--color-navy)!important;
+}
+.check{
+    background-color: var(--color-navy);
+    color:var(--color-white);
+}
+.annual-btn{
+    position: relative;
+    z-index: 32;
+}
+.dropdown{
+    display: flex;
+    color: var(--color-white);
+    border-radius: 5px;
+    border: 1px solid var(--color-navy);
+    margin: 9px 0 0 50px;
+    padding: 5px 5px 5px 5px;
+    background-color: var(--color-navy);
+    cursor: pointer;
+}
+.dropdown-year{
+    padding:5px 5px 5px 5px;
+}
+.icon{
+    padding:5px 5px 5px 5px;
+}
+.dropdown-year-box{
+    position: absolute;
+    z-index: 32;
+    right: 0;
+    display: none;
+    width: 77px;
+    height: 85px;
+    padding: 2px 0 0 20px;
+    border-radius: 3px;
+    background-color: rgba(255,255,255, 0.8);
+    overflow: auto;
+    cursor: pointer;
+}
+
+.annual-digital {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0 0 0 ;
+}
+
+.annual-box{
+    /* width:1200px; */
+    margin: 0 50px 0 50px;
+    /* width:90%; */
+    height:450px;
+    overflow: auto;
+}
+table {
+    width: 1600px!important;
+    /* border: 2px solid var(--color-white)!important; */
+    font-size: 10px;
+    position: relative;
+}
+/* 左側第一欄的文字顏色*/
+.table-striped tbody td:first-child {
+    /* color: var(--color-darkgary)!important; */
+    background-color: var(--color-begie);
+    cursor: pointer;
+}
+.table-striped tbody td:first-child:hover {
+    background-color:  rgb(143, 194, 63);
+}
+thead {
+    position: sticky;
+    top: 0;
+    z-index: 31;
+    color: var(--color-white);
+    background-color: var(--color-darkgary);  
+}
+/* 將第一欄固定在左側 */
+th:first-child, td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color:var(--color-darkgary);
+
+}
+tr {
+    border: 0.5px solid var(--color-darkgary);
+}
+td {
+    font-size: 10px;
+    height: 30px;
+}
+.center-align {
+    text-align: center;
+}
+.name{
+    width: 60px;
+}
+
+.chart-box{
+    display: flex;
+    justify-content: center;
+    margin: 30px 0 0 0 ;
+}
+.chart-frame{
+    display: flex;
+    justify-content: space-between;
+    /* margin: 0 50px 0 50px; */
+    width:1200px;
+}
+.line{
+    position: relative;
+    width:550px;
+}

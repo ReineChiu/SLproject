@@ -17,18 +17,24 @@ from django.contrib import admin
 from django.urls import path, re_path
 
 # from message.views import message, uploadFile, getFile
-from standings.views import standings, getPosData, getPlayerInfo, getplayer, Players#, players_name
+from standings.views import standings, getPlayerName, checkPlayer, getRanking, Players#, players_name
 from teams.views import teams, getTeams
+from annual.views import annual, getAnnual, getAnnualData, getPlayerInfo
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', standings),
-    # path('api/getIndex', getIndex),
-    path('api/getplayer', getplayer),
+    path('api/getplayername', getPlayerName),
+    path('api/checkplayer', checkPlayer),
     path('players/<int:_id>', Players),
-    path('api/getPosData', getPosData),
-    path('api/getPlayerInfo', getPlayerInfo),
+    path('api/getranking', getRanking),
+    # path('api/getPosData', getPosData),
     path('teams', teams),
-    path('api/getTeams', getTeams)
+    path('api/getTeams', getTeams),
+    path('annual', annual), 
+    path('api/annual', getAnnual),
+    path('api/annualdata', getAnnualData),  
+    path('api/getPlayerInfo', getPlayerInfo),
 ]
 

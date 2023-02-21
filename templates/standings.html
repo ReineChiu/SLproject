@@ -10,33 +10,68 @@
 
 {% block content %}
 <main>
-    <!-- <div class="left">
-        <div class="radar">
-            <div class="radar_box" style="position: relative; height:300px; width:300px">
-                <canvas id="ERA"></canvas>
-            </div>
-            <div class="radar_box" style="position: relative; height:300px; width:300px">
-                <canvas id="fp"></canvas>
-            </div>
-        </div>
-        <div class="line" style="position: relative; height:700px; width:700px">
-            <canvas id="myChart"></canvas>
-        </div>
-    </div> -->
-    <div class="search">
+    {% csrf_token %}
+    <div class="background-image"></div>
+    <div class="slogan">
+        <div>非賽季（off-season）的時候，寒冷的冬天，球迷圍在火爐旁</div>
+        <div>透過中華職棒數據的資料分析，討論喜愛的棒球隊與球員</div>
+    </div>
+    <div class="search">        
         <form class="form">
-            {% csrf_token %}
+            
             <div class="search-bar">
                 <label for=""></label>
-                <input class="text" id="search-text" type="text" name="text" placeholder="search name">
+                <input class="text" id="search-text" type="text" name="text" placeholder="輸入球員姓名">
             </div>
-            <div class="send-btn">send</div>
+            <!-- <div class="send-btn">send</div> -->
         </form>
+        <div class="player-menu"></div>
         <div class="error-box">
-            <div class="error-name">沒有這名球員資料</div>
         </div>
     </div>
-    <div class="year-box">
+    <div class="fieldboard">
+        <div class="title-box">
+            <div class="title-pos">
+                <div class="pos" id="pos-field">打者</div>
+                <div class="index">AVG</div>
+            </div><hr>
+            
+        </div>
+        <div class="year-box">
+            <div class="show-year">               
+                <div class="field-year-title">2022</div>
+                <div class="icon"><div class="dropdown-toggle" id="fieldarrow"></div></div>
+            </div>
+            <div class="field-years-frame"></div>
+        </div>
+        <div class="fieldrank"></div>
+        <div class="fieldbtn">
+            <div class="rank-btn" id="field-annual">查看年度排行</div>
+        </div>
+    </div>
+    <div class="pitchboard">
+        <div class="title-box">
+            <div class="title-pos">
+                <div class="pos" id="pos-pitch">投手</div>
+                <div class="index">ERA</div>
+            </div><hr>
+        </div>
+        <div class="year-box">
+            <div class="show-year">
+                <div class="pitch-year-title">2022</div>
+                <div class="icon"><div class="dropdown-toggle" id="pitcharrow"></div></div>
+            </div>
+            <div class="pitch-years-frame"></div>
+        </div>
+        <div class="pitchrank"></div>
+        <div class="pitchdbtn">
+            <div class="rank-btn" id="pitch-annual">查看年度排行</div>
+        </div>
+
+    </div>
+
+
+    <!-- <div class="year-box">
         <div class="year-frame"></div>
     </div>
     <div class="pos-box">
@@ -48,13 +83,7 @@
     <div class="player-box">
         <div class="player-frame"></div>
     </div>
-    <div class="chart-box">
-        <div class="chart-frame">
-            <div class="line" style="position: relative; height:1000px; width:900px">
-                <canvas id="myChart"></canvas>
-            </div>
-        </div>
-    </div>
+-->
 </main>
 <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 <script src="{% static 'js/standings.js' %}"></script>

@@ -22,7 +22,7 @@ teamBtn.forEach(item => {
         fetch('api/getTeams', {
             method:"POST",
             headers:{
-                'X-CSRFToken': csrftoken  
+                'X-CSRFToken': csrftoken
             },
             body:formData
         })

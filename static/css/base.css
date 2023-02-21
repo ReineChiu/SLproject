@@ -40,22 +40,47 @@ body{
 }
 .head{
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* width: 1200px; */
-    height: 34px;
-    margin: 10px 0 10px 50px; 
+    justify-content: center;
+    width: 1200px;
+    height: 50px;
+    /* margin: 10px 0 10px 0;  */
+}
+/* .img-home{
+    width: 50px;
+    height: 30px;
+} */
+.home-logo{
+    position: relative;
+    z-index: 0;
+    width:350px;
+    /* top:10px; */
 }
 .domain-name{
-    display: flex;
-    justify-content: left;
-    width: 300px;
+    position: absolute;
+    z-index: 1;
+
+    /* display: flex;
+    justify-content: center; */
+    /* width: 220px; */
     font-size: 30px;
     color:var(--color-white);
     cursor: pointer;
 }
-.item{
-    margin:0 200px 0 0;
-    color:var(--color-white);
-    cursor: pointer;
+.images{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    width:150px;
+    height:50px;
+    filter: drop-shadow(0 0 5px #000)
 }
+.CPBL{
+    position: absolute;
+    z-index: 2;
+    top: 10px;
+    right: 50px;
+    color: var(--color-navy);
+    font-size: 20px;
+}
+
