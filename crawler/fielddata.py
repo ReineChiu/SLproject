@@ -18,7 +18,6 @@ for i in range(6000 ,7000):
     for script in script_tag:
         token = re.search(r"RequestVerificationToken: '(.*?)'", script.text)
         if token:
-            # 得到RequestVerificationToken
             token = token.group(1)
 
             url = "https://www.cpbl.com.tw/team/getbattingscore"
@@ -51,7 +50,6 @@ for i in range(6000 ,7000):
                                 x["IntentionalBasesONBallsCnt"],x["HitBYPitchCnt"],x["StrikeOutCnt"],
                                 x["DoublePlayBatCnt"],x["SacrificeHitCnt"],x["SacrificeFlyCnt"],x["StealBaseOKCnt"],
                                 x["StealBaseFailCnt"],x["Obp"],x["Slg"],x["Ops"],x["Goao"],
-                                # (x["BasesONBallsCnt"]+x["IntentionalBasesONBallsCnt"]+x["HitBYPitchCnt"])/x["StrikeOutCnt"],
                                 player["id"],x["GroundOut"],x["FlyOut"],x["SB"]
                                 ]
                         insert_fielder(field)

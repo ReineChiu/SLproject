@@ -12,24 +12,14 @@ connection_pool = pooling.MySQLConnectionPool(pool_name = "pynative_pool",
                                               charset = "utf8")
 
 
-# cnx = mysql.connector.connect(
-#     host="localhost",
-#     user="root",
-#     password="80jK%&80",
-#     database="django"
-# )
-# cursor = cnx.cursor()
 def select_all_player(name):
     try:
         connection_object = connection_pool.get_connection()
         cursor = connection_object.cursor(dictionary=True, buffered=True)
-        select = "select * from standings_all_player where player_name=%s" #and id=%s"# and pos='投手'order by id desc limit 1"
-        # 判斷這個球員是否有寫入過資料？select * from
+        select = "select * from standings_all_player where player_name=%s" 
         value = [name]
-        # print("資料庫",value)
         cursor.execute(select, value)
         result = cursor.fetchone()
-        # print(result)
         return result
     except Exception as e:
         print(f'{e}:查詢球員資料失敗')
@@ -48,7 +38,6 @@ def insert_allplayer(data):
             '''
         for i in range(len(data)):
             values = [data[i]]
-            # print(values)
             cursor.executemany(insert, values)
         connection_object.commit()
     except Exception as e:
@@ -61,13 +50,10 @@ def select_fielder_player(name, year):
     try:
         connection_object = connection_pool.get_connection()
         cursor = connection_object.cursor(dictionary=True, buffered=True)
-        select = "select * from standings_fielder where fielder_name=%s and year=%s"# and pos='投手'order by id desc limit 1"
-        # 判斷這個球員是否有寫入過資料？select * from
+        select = "select * from standings_fielder where fielder_name=%s and year=%s"
         value = [name,year]
-        # print("資料庫",value)
         cursor.execute(select, value)
         result = cursor.fetchone()
-        # print(result)
         return result
     except Exception as e:
         print(f'{e}:查詢球員資料失敗')
@@ -231,3 +217,37 @@ def insert_game(data):
     finally:
         cursor.close()
         connection_object.close()
+
+# ========================================================================== //
+def select_game(number):
+    try:
+        connection_object = connection_pool.get_connection()
+        cursor = connection_object.cursor(dictionary=True, buffered=True)
+        select = "select * from standings_game where number=%s"
+        # 判斷這個球員是否有寫入過資料？select * from
+        value = [number]
+        # print("資料庫",value)
+        cursor.execute(select, value)
+        result = cursor.fetchone()
+        return result
+    except Exception as e:
+        print(f'{e}:查詢球賽資料失敗')
+    finally:
+        cursor.close()
+        connection_object.close()
+
+def update_game(*args):
+    try: 
+        connection_object = connection_pool.get_connection()
+        cursor = connection_object.cursor()
+
+        update = ("update standings_game set homeScore=%s,homePitch=%s,awayScore=%s,awayPitch=%s,winPitch=%s,losePitch%s where id=%s")
+
+        cursor.execute(update, args)
+        connection_object.commit()
+    except Exception as e:
+        print(f'{e}:更新球賽失敗')
+    finally:
+        cursor.close()
+        connection_object.close()
+
