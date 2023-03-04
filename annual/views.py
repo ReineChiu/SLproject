@@ -7,11 +7,17 @@ from standings.models import Fielder, All_player, Pitcher
 
 import json
 
-# Create your views here.
 def annual(request):
-    return render(request, 'annual.html')
+    pos = request.GET.get('pos')
+    year = request.GET.get('annual')
+    if pos not in ['field', 'pitch']:
+        return render(request, '404.html', status=404)
+    if str(year) not in [str(y) for y in range(2003, 2023)]:
+        return render(request, '404.html', status=404)
+    else:
+        return render(request, 'annual.html', {'pos':pos, 'year':year})
 
-def getAnnual(request):
+def checkAnnual(request):
     if request.method == "GET":
         pos = request.GET.get('pos')
         year = request.GET.get('annual')
@@ -34,14 +40,12 @@ def getAnnualData(request):
             if pos == "field":
                 data = Fielder.objects.all().filter(year=year).order_by(
                     '-Runs','AVG').values()
-                data = list(data)
-                # print(data)
+                data = tuple(data)
                 return JsonResponse({"ok":True, "field":data})
             else:
                 data = Pitcher.objects.all().filter(year=year).order_by(
                     '-Win','ERA').values()
-                data = list(data)
-                # print(data)
+                data = tuple(data)
                 return JsonResponse({"ok":True, "pitch":data})
         except Exception as e: 
             print(f"{e}:取得年度資料發生錯誤")
@@ -55,12 +59,10 @@ def getPlayerInfo(request):
             pos = request.POST.get('pos')
             if pos == "pitch":
                 player = Pitcher.objects.filter(year=year,pitcher_name=name).values()
-                # print(list(player))
-                return JsonResponse({"ok":True, "pitcher":list(player)})
+                return JsonResponse({"ok":True, "pitcher":tuple(player)})
             else :
                 player = Fielder.objects.filter(year=year,fielder_name=name).values()
-                # print(list(player))
-                return JsonResponse({"ok":True, "fielder":list(player)})
+                return JsonResponse({"ok":True, "fielder":tuple(player)})
 
     except Exception as e: 
         print(f"{e}:取得單一球員資料發生錯誤")

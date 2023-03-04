@@ -2,6 +2,8 @@ const urlParams = new URLSearchParams(window.location.search);
 const pos = urlParams.get('pos');
 const annual = urlParams.get('annual');
 
+document.title = annual+'資料'
+
 const dropdownYear = document.querySelector(".dropdown-year");
 dropdownYear.textContent = annual;
 
@@ -23,6 +25,8 @@ const getAnnualData = (url, csrftoken, formData) => {
       body: formData
     }).then(response => response.json())
 }  
+
+
 // =========== 建立 chart 函式 ============= //
 const myCharts = [];
 const colorList = [
@@ -31,8 +35,8 @@ const colorList = [
                 ];
 let colorIndex = 0;
 
+
 const updateChartData = (chartIndex, labels, data, pitcherName, colorIndex) =>{
-// function updateChartData(chartIndex, labels, data, pitcherName, colorIndex){
     if (!myCharts[chartIndex]) {
         const ctx = document.getElementById(`myChart${chartIndex + 1}`);
         myCharts[chartIndex] = new Chart(ctx, {
@@ -46,36 +50,29 @@ const updateChartData = (chartIndex, labels, data, pitcherName, colorIndex) =>{
                     data: data,
                     borderWidth: 2
                 }]
-            }
-        })
+            },
+        })          
     } else {
         let datasetExists = false;
         myCharts[chartIndex].data.datasets.forEach(dataset => {
             if (dataset.label === pitcherName) {
-                // 如果已经存在相同投手的数据集，则更新该数据集的数据
                 dataset.data = data;
                 datasetExists = true;
+                
             }
         });
         if (!datasetExists) {
             myCharts[chartIndex].data.datasets.push({
-              label: pitcherName,
-              backgroundColor: colorList[colorIndex],
-              borderColor: colorList[colorIndex],
-              data: data,
-              borderWidth: 2
+                label: pitcherName,
+                backgroundColor: colorList[colorIndex],
+                borderColor: colorList[colorIndex],
+                data: data,
+                borderWidth: 2,
             });
         }
     }
     myCharts[chartIndex].update();
 }
-// const currentUrl = window.location.href;
-// console.log(currentUrl);
-// const currentPath = window.location.pathname;
-// console.log(currentPath);
-// const currentQuery = window.location.search;
-// console.log(currentQuery);
-// console.log(pos, annual);
 
 
 // =========== 建立 table 函式 ============= //
@@ -86,12 +83,11 @@ const createTable = (posCol, allPosRows) =>{
 
     posCol.forEach(item =>{
         const headTh = document.createElement("th");
-        // Create a new column 
         headTh.textContent = item;
         headTh.classList.add("column");
-        headTr.appendChild(headTh);
-        
+        headTr.appendChild(headTh);   
     })
+
     allPosRows.forEach((item, index) => {
         const newRow = document.createElement("tr");
         item.forEach((col, colIndex) => {
@@ -107,6 +103,7 @@ const createTable = (posCol, allPosRows) =>{
         tbody.appendChild(newRow);
     });
     table.classList.add("center-align");
+
     return table;
 }
 
@@ -139,36 +136,80 @@ getAnnualData(url, csrftoken, formData).then((data) => {
         })
         // ============== 數值欄位化 =============== //
         createTable(pitchCol, allPitchRows)
-        
-        const playerBtn = document.querySelectorAll(".name");
-            playerBtn.forEach(item => {
-                item.addEventListener("click", () => {
-                    const playerName = item.textContent
-                    const csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-                    formData.append("name", playerName);  
-                    // for (const [key, value] of formData.entries()) {
-                    //     console.log(`${key}: ${value}`);
-                    // }
-                    const url1 ='api/getPlayerInfo';
-                    getAnnualData(url1, csrftoken, formData).then((data) => {
-                        if ("pitcher" in data){
-                            data.pitcher.forEach(item =>{
-                                updateChartData(0, ["防禦率","被上壘率", "滾飛出局比", "保送三振比"], 
-                                                [item.ERA,item.WHIP, item.GB_FB, (item.BB+item.IBB+item.DB)/item.SO], 
-                                                item.pitcher_name, colorIndex
-                                                );
-                                updateChartData(1, ["K9值", "B9值", "H9值"], 
-                                                [(item.SO/item.IP)*9, (item.BB/item.IP)*9, (item.Hits/item.IP)*9], 
-                                                item.pitcher_name, colorIndex
-                                                );    
-                            })
-                            colorIndex = (colorIndex + 1) % colorList.length;                          
-                        }
-                    })
+
+        // ============== 依排序改變 =============== //
+        const tableHeader = document.querySelector("table thead tr");
+        let isAscending = true; 
+        let columnIndex = -1;
+
+        tableHeader.addEventListener("click", function(e) {
+            columnIndex = Array.from(e.target.parentNode.children).indexOf(e.target);// 取得選取欄位在第幾位，便於排列同一欄位的row值
+            console.log(columnIndex)
+            const otherHeaders = document.querySelectorAll("table thead tr th:not(:nth-child(" + (columnIndex + 1) + "))");
+            for (let header of otherHeaders) {
+                header.classList.remove("sort-icon-asc");
+                header.classList.remove("sort-icon-desc");
+            }
+
+            const bodyRows = document.querySelectorAll("table tbody tr");
+            let values = [];
+            for (let row of bodyRows) {
+                const cellValue = parseFloat(row.querySelectorAll("td")[columnIndex].textContent);                
+                if (!isNaN(cellValue)) {
+                    values.push(cellValue);                    
+                }
+            }
+            if (isAscending) {
+                values.sort(function(a, b) {
+                    return a - b;
+                });
+                e.target.classList.add('sort-icon-asc');
+                e.target.classList.remove('sort-icon-desc');
+            } else {
+                values.sort(function(a, b) {
+                    return b - a;
+                });
+                e.target.classList.add('sort-icon-desc');
+                e.target.classList.remove('sort-icon-asc');
+            }
+            let tbody = document.querySelector("table tbody");
+            for (let value of values) {
+                let matchingRows = Array.from(bodyRows).filter((row) => {
+                    return parseFloat(row.querySelectorAll("td")[columnIndex].textContent) === value;
+                });
+                for (let row of matchingRows) {
+                    tbody.appendChild(row);
+                }
+            }
+            // 切換當前排序順序
+            isAscending = !isAscending;
+        });
+
+        const playerBtn = document.querySelectorAll("tbody tr");
+        playerBtn.forEach(item => {
+            item.addEventListener("click", () => {
+                const playerName = item.querySelector(".name").textContent;
+                const csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                formData.append("name", playerName);  
+                const url1 ='api/getPlayerInfo';
+                getAnnualData(url1, csrftoken, formData).then((data) => {
+                    if ("pitcher" in data){
+                        data.pitcher.forEach(item =>{
+                            updateChartData(0, ["防禦率","被上壘率", "滾飛出局比", "保送三振比"], 
+                                            [item.ERA,item.WHIP, item.GB_FB, (item.BB+item.IBB+item.DB)/item.SO], 
+                                            item.pitcher_name, colorIndex
+                                            );
+                            updateChartData(1, ["K9值", "B9值", "H9值"], 
+                                            [(item.SO/item.IP)*9, (item.BB/item.IP)*9, (item.Hits/item.IP)*9], 
+                                            item.pitcher_name, colorIndex
+                                            );    
+                        })
+                        colorIndex = (colorIndex + 1) % colorList.length;                          
+                    }
                 })
             })
+        })
     } else {
-        console.log(data)
         const allFieldRows = [];    
         data.field.forEach(item =>{
             const fieldRow = [
@@ -181,10 +222,58 @@ getAnnualData(url, csrftoken, formData).then((data) => {
         })
         createTable(fieldCol, allFieldRows)
 
-        const playerBtn = document.querySelectorAll(".name");
+        // ============== 依排序改變 =============== //
+        const tableHeader = document.querySelector("table thead tr");
+        let isAscending = true; 
+        let columnIndex = -1;
+
+        tableHeader.addEventListener("click", function(e) {
+            columnIndex = Array.from(e.target.parentNode.children).indexOf(e.target);
+            console.log(columnIndex)
+            // 刪除其他元素的 sort-icon-asc 和 sort-icon-desc 類別
+            const otherHeaders = document.querySelectorAll("table thead tr th:not(:nth-child(" + (columnIndex + 1) + "))");
+            for (let header of otherHeaders) {
+                header.classList.remove("sort-icon-asc");
+                header.classList.remove("sort-icon-desc");
+            }
+
+            const bodyRows = document.querySelectorAll("table tbody tr");
+            let values = [];
+            for (let row of bodyRows) {
+                const cellValue = parseFloat(row.querySelectorAll("td")[columnIndex].textContent);                
+                if (!isNaN(cellValue)) {
+                    values.push(cellValue);                    
+                }
+            }
+            if (isAscending) {
+                values.sort(function(a, b) {
+                    return a - b;
+                });
+                e.target.classList.add('sort-icon-asc');
+                e.target.classList.remove('sort-icon-desc');
+            } else {
+                values.sort(function(a, b) {
+                    return b - a;
+                });
+                e.target.classList.add('sort-icon-desc');
+                e.target.classList.remove('sort-icon-asc');
+            }
+            let tbody = document.querySelector("table tbody");
+            for (let value of values) {
+                let matchingRows = Array.from(bodyRows).filter((row) => {
+                    return parseFloat(row.querySelectorAll("td")[columnIndex].textContent) === value;
+                });
+                for (let row of matchingRows) {
+                    tbody.appendChild(row);
+                }
+            }
+            isAscending = !isAscending;
+        });        
+
+        const playerBtn = document.querySelectorAll("tbody tr");
         playerBtn.forEach(item => {
             item.addEventListener("click", () => {
-                const playerName = item.textContent
+                const playerName = item.querySelector(".name").textContent;
                 const csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
                 formData.append("name", playerName);  
 
@@ -209,6 +298,7 @@ getAnnualData(url, csrftoken, formData).then((data) => {
     }   
 })
 
+
 const posBtn = document.querySelectorAll(".annual-pos")
 posBtn.forEach(item => {
     item.addEventListener("click", () => {
@@ -221,7 +311,7 @@ posBtn.forEach(item => {
         window.location.href = url.href;
     })
 })
-const years = Array.from({length: 20}, (_, i) => 2022 - i);//創建一個內容為20個元素（從0到19）的陣列，並使用該元素的索引對2022進行减法，以創建陣列中的每一個元素。
+const years = Array.from({length: 20}, (_, i) => 2022 - i);
 const dropdownMenu = document.querySelector(".dropdown-year-box");
 
 years.forEach(ele =>{
@@ -250,10 +340,11 @@ for (let i=0; i<allYear.length; i++){
         dropdownYear.textContent = e.target.textContent;
         const urlParams = new URLSearchParams(window.location.search);
         const pos = urlParams.get('pos');
-        console.log(pos)
         const yearTitle = document.querySelector(".dropdown-year")
         const annual = yearTitle.textContent;
         const url = `annual?pos=${pos}&annual=${annual}`;
         location.href = url;
     })
 }
+
+

@@ -1,5 +1,5 @@
 :root {
-    --color-white: #FFFFFF;
+    --color-white: #ffffff;
     --color-gary: #CCCCCC;
     --color-darkgary: #555353;
     --color-green1: #6e8c03;
@@ -29,15 +29,22 @@
 }
 .nav-tabs{
     --bs-nav-tabs-border-color: var(--color-navy)!important;
+    --bs-nav-tabs-border-width: 2px;
+}
+.nav-item {
+    margin: 0 1px 0 0 ;
 }
 .team-box{
     border: 2px solid var(--color-navy)!important;
+    /* background-color: var(--color-navy); */
+    /* color:#ffffff; */
     border-radius: 5px 5px 0 0;
 }
 .team-box:hover{
     color: var(--color-white);
     background-color: var(--color-navy)!important;
-    border-radius: 5px 5px 0 0;
+    /* filter: drop-shadow(0 0 5px #e7d48b); */
+    /* border-radius: 5px 5px 0 0; */
 }
 .add-team-box{
     color: var(--color-white);
@@ -59,14 +66,74 @@
     justify-content: left;
 }
 .team-players-box{
-    border: 2px solid var(--color-navy);
-    border-radius: 0 0 10px 10px;
-    padding:0 20px 20px 20px;
+    display: block;
+    /* border: 2px solid var(--color-navy);
+    border-radius: 0 0 10px 10px; */
+    padding:0 0 20px 0;
 }
+.first-team{
+    display: block;
+    margin: 20px 0 0 0;
+    padding:0 0 10px 0;
+    border-radius: 10px;
+    background-color: var(--color-hr);
+    box-shadow: 0 10px 10px rgba(193, 157, 21, 0.5);
+}
+
+hr{
+    height:3px; 
+    width:95%; 
+    border-width:0.5; 
+    color:rgba(255,255,255); 
+    margin: 20px 0 0 20px;
+}
+
+
+.second-team{
+    display: block;
+    margin: 20px 0 0 0;
+    padding:0 0 10px 0;
+    border-radius: 10px;
+    background-color: var(--color-hr);
+    box-shadow: 0 10px 10px rgba(193, 157, 21, 0.5);
+}
+
+.team-title{
+    width:996px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px 0 10px 0;
+    color: var(--color-red);
+
+    /* background-color: rgba(255, 255, 255, 0.5); */
+}
+.first-team-players {
+    display: flex;
+    flex-wrap: wrap;
+    /* margin:0 0 20px 30px; */
+    padding: 0 0 20px 15px;
+}
+.second-team-players {
+    display: flex;
+    flex-wrap: wrap;
+    /* margin:0 0 20px 30px; */
+    padding: 0 0 20px 15px;
+}
+
 .player-name{
-    font-size: 20px;
-    margin:20px 20px 0 0 ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    font-size: 18px;
+    margin:5px 0 0 0 ;
+    padding:5px 8px 5px 8px;
     text-decoration:none;
     color:var(----color-navy);
+    cursor: pointer;
+}
+.player-name:hover{
+    border-radius: 3px;    
+    background-color: var(--color-none);
     cursor: pointer;
 }

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Oswald&display=swap');
 :root {
     --color-white: #ffffff;
     --color-gary: #CCCCCC;
@@ -21,31 +22,34 @@ main{
 }
 
 .background-image{
-    position: relative;
-    z-index: 10;
-    left: -360;
-    top: -10px;
-
     display: flex;
-    justify-content: right;  
+    /* justify-content: right;   */
 }
 .backimages{
-    width:700px;
-    opacity: 0.8;
+    width:750px;
+    opacity: 0.3;
+}
+.front-data{
+    position: relative;
+    z-index: 11;
+    width: 1000px;
+    left: -500px;
+    top: 0;
+
 }
 .slogan{
     position: absolute;
-    z-index: 11;
-    right: 750px;
-    top: 195px;
+    z-index: 12;
+    right: 220px;
+    top: 50px;
     color: var(--color-darkgary);
 }
 .search{
     display: block;
     position: absolute;
-    z-index: 1;
-    top: 110px;
-    right: 400px;
+    z-index: 12;
+    top: 50px;
+    right: -50px;
 }
 
 .form{
@@ -55,12 +59,11 @@ main{
 .search-bar{
     display: flex;
     justify-content: center;
-    margin: 0 ;
 }
 input{
-    width: 200px;
+    /* width: 200px; */
     /* height: 32px; */
-    padding: 8px 10px;
+    padding: 10px 10px;
     font-size: 16px;
     border-radius: 3px 3px 3px 3px;
     border: none;
@@ -79,8 +82,8 @@ input:focus{
 } */
 .player-menu{
     display: block;
-    width: 200px;
-    max-height: 250px;
+    width: 198px;
+    max-height: 170px;/*245px;*/
     overflow:auto;
     margin:2px 0 0 0 ;
     border:0;
@@ -112,19 +115,204 @@ input:focus{
     justify-content: center;
 }
 .error-name{
-    /* width: 200px; */
     white-space: pre-line;
+    text-align: center;
     margin: 10px 0 0 0;
     padding: 3px 20px 3px 20px;
     border-radius: 3px;
     color: var(--color-white);
     background-color: var(--color-bred);
 }
-.fieldboard{
+.game-data{
+    position: absolute;
+    z-index: 9;
+    top: 450px;
+    right: -50px;
+
+    display:block;
+    /* justify-content: center; */
+    width: 600px;
+    /* border: 1px solid var(--color-white); */
+    border-radius: 5px 5px 5px 5px;
+    background-color:  rgba(255,255,255, 0.7);
+}
+.game-title{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 30px;
+    padding: 0 15px 0 15px;
+    margin: 8px 0 8px 0;
+}
+
+.time-local{
+    display: flex;
+    justify-content: center;
+}
+.time{
+    display: flex;
+    justify-content: left;
+    width:225px;
+}
+.location{
+    display: flex;
+    justify-content: right;
+    width:225px;
+}
+.game-team{
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 0 0 ;
+}
+.home-team{
+    display: flex;
+    justify-content: left;
+    font-size: 20px;
+    width:150px;
+    margin: 0 0 0 10px ;
+}
+.guest-team{
+    display: flex;
+    justify-content: right;
+    font-size: 20px;
+    width:150px;  
+    margin: 0 10px 0 0 ;
+}
+
+.score{
+    font-size: 20px;
+    margin:0 5px 0 5px;
+    color: var(--color-bred);
+}
+/* .home-score{
+    font-size: 20px;
+    margin:0 5px 0 5px; 
+} */
+.colon{
+    font-size: 24px;
+}
+.game-pitch{
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 0 0 ;
+}
+.start-pitch{
+    display: flex;
+    justify-content: center;
+    /* width: 150px; */
+}
+.guest-pitch{
+    display: flex;
+    justify-content: right;
+    margin:0 50px 0 0;
+    width:100px;
+}
+.home-pitch{
+    display: flex;
+    justify-content: left;
+    margin:0 0 0 50px;
+    width:100px;
+}
+.game-player-data{
+    display: flex;
+    justify-content: center;
+    margin: 30px 0 10px 0 ;
+}
+.win-pitch{
+    margin:0 30px 0 0;
+}
+.lose-pitch{
+    margin:0 30px 0 0;
+}
+
+.game-preview{
     position: absolute;
     z-index: 11;
-    top: 110px;
-    right: 100px;
+    top: 250px;
+    right: -50px;
+
+    display:block;
+    /* justify-content: center; */
+    width: 600px;
+    border-radius: 5px 5px 5px 5px;
+    background-color:  rgba(255,255,255, 0.7);
+}
+.title-text{
+    font-family: 'Nunito Sans', sans-serif;
+}
+/* .location{
+    display: flex;
+    justify-content: right;
+} */
+.no-game{
+    display: none;
+}
+.game-detail{
+    display: none;
+}
+
+.show-future-game{
+    display:flex;
+    /* margin: 0 20px 0 20px; */
+    /* padding: 0 0 20px 0;
+    width:560px;
+    overflow:auto; */
+}
+.left-arrow{
+    display: flex;
+    align-items: center;
+    margin: 0 5px 0 5px;
+}
+.fa-chevron-left{
+    cursor: pointer;
+}
+.game-calendar-box{
+    display:flex;
+    /* margin: 0 20px 0 20px; */
+    padding: 0 10px 20px 20px;
+    width:560px;
+    overflow-x: overlay;
+}
+.right-arrow{
+    display: flex;
+    align-items: center;
+    margin: 0 5px 0 10px;
+}
+.fa-chevron-right{
+    cursor: pointer;
+}
+
+.game-calendar{
+    display:block;
+    margin:0 30px 0 0;
+    border-radius: 3px;
+    border:2px solid var(--color-navy) ;
+    min-width: 150px;
+    padding:5px 5px 5px 10px;
+}
+.game-play-date{
+    text-align: center;
+    color: var(--color-navy);
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight:bold;
+}
+.game-play-time{
+    text-align: center;
+    color: var(--color-darkgary);
+}
+.text{
+    font-family: 'Nunito Sans', sans-serif;
+}
+.text-color{
+    color:var(--color-bred);
+}
+
+
+.fieldboard{
+    position: absolute;
+    z-index: 12;
+    top: 50px;
+    right: -350px;
 
     display:block;
     /* justify-content: center; */
@@ -139,7 +327,6 @@ input:focus{
     height: 30px;
     flex-wrap: wrap;
     margin: 5px 0 5px 0;
-
 }
 .title-pos{
     display: flex;
@@ -159,25 +346,24 @@ input:focus{
 
 hr{
     height:2px; 
-    width:90%; 
-    border-width:0; 
-    color:var(--color-navy); 
-    background-color:var(--color-navy);
+    width:96%; 
+    border-width:0.5; 
+    color:var(--color-hr); 
+    /* background-color:var(--color-hr); */
     margin: 0;
     opacity: 1;
 }
 .pitchboard{
     position: absolute;
-    z-index: 11;
-    top: 430px;
-    right: 100px;
+    z-index: 12;
+    top: 390px;
+    right: -350px;
 
     display:block;
     width: 200px;
     border: 1px solid var(--color-white);
     border-radius: 5px 5px 5px 5px;
     background-color:  var(--color-white);
-
 }
 .year-box{
     display: flex;
@@ -189,9 +375,17 @@ hr{
     align-items: center;
     width:180px;
 }
-.year-title{
-    font-size: 20px;
+.field-year-title{
+    font-size: 16px;
+    /* font-family: 'Nunito Sans', sans-serif; */
+    letter-spacing:1.3px;
 }
+.pitch-year-title{
+    font-size: 16px;
+    /* font-family: 'Nunito Sans', sans-serif; */
+    letter-spacing:1.3px;
+}
+
 .field-years-frame{
     position: absolute;
     z-index:15;
@@ -218,20 +412,23 @@ hr{
     overflow: auto;
 }
 .fieldyear{
-    font-size: 18px;
+    font-size: 16px;
     padding: 2px 0 0 0;
     cursor: pointer;
-}
+    font-family: 'Nunito Sans', sans-serif;}
 .pitchyear{
-    font-size: 18px;
+    font-size: 16px;
     padding: 2px 0 0 0;
     cursor: pointer;
-}
+    font-family: 'Nunito Sans', sans-serif;}
 .icon{
     margin: 0 0 0 20px;
     cursor: pointer;
 }
 .fieldrank{
+    margin:5px 0 0 0 ;
+}
+.pitchrank{
     margin:5px 0 0 0 ;
 }
 .rank-bar{
@@ -252,9 +449,15 @@ hr{
     display: flex;
     justify-content: right;
     width:60px;
+    font-family: 'Nunito Sans', sans-serif;
 }
 
 .fieldbtn{
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 10px 0;
+}
+.pitchbtn{
     display: flex;
     justify-content: center;
     margin: 10px 0 10px 0;

@@ -52,7 +52,7 @@ main{
 .fieldimage{
     position: absolute;
     z-index: 21;
-    left:-50px;
+    left:-70px;
 
     display: flex;
     justify-content: center;
@@ -61,7 +61,8 @@ main{
 .pitchimage{
     position: absolute;
     z-index: 21;
-    left:-100px;
+    top:-20px;
+    left:-80px;
 
     display: flex;
     justify-content: center;
@@ -82,7 +83,7 @@ main{
 .team{
     position: absolute;
     z-index: 22;
-    top:80px;
+    top:20px;
     right:0;
 
     font-size: 28px;
@@ -91,38 +92,38 @@ main{
 .name{
     position: absolute;
     z-index: 22;
-    top:110px;
-    right:0;
+    top: 60px;
+    right: -8px;
 
     font-size: 60px;
 }
 .o-name{
     position: absolute;
     z-index: 22;
-    top:200px;
+    top: 150px;
     right:0;
 }
 .retireimage{
     position: absolute;
     z-index: 22;
-    top:180px;
-    left:220px;
+    top: 140px;
+    left: 250px;
     width:80px;
 }
 .advanced{
     position: absolute;
     z-index: 22;
-    top:243px;
+    top:256px;
     right:0;
     width:90px;
-    height:300px;
+    height:290px;
     border-radius: 5px;
     background-color: rgba(143,178,206);
 }
 .latest-year{
     position: absolute;
     z-index: 22;
-    top:20px;
+    top: 10px;
     right: 25px;
     font-size: 18px;
     color: var(--color-navy);
@@ -130,7 +131,7 @@ main{
 .data1{
     position: absolute;
     z-index: 22;
-    top:60px;
+    top: 50px;
     right:10px;
     width: 70px;
     height: 70px;
@@ -141,8 +142,8 @@ main{
 .data2{
     position: absolute;
     z-index: 22;
-    top:140px;
-    right:10px;
+    top: 130px;
+    right: 10px;
     width: 70px;
     height: 70px;
     border-radius: 5px;
@@ -152,7 +153,7 @@ main{
 .data3{
     position: absolute;
     z-index: 22;
-    top:220px;
+    top: 210px;
     right:10px;
     width: 70px;
     height: 70px;
@@ -201,7 +202,7 @@ main{
 .box-content{
     display: flex;
     justify-content: right;
-    width:200px;
+    width:225px;
     margin:0 10px 0 0;
     color:var(--color-navy);
 }
@@ -238,6 +239,7 @@ main{
 table {
     border: 2px solid var(--color-white)!important;
     font-size: 10px;
+    font-family: proxima-nova, "open Sans", Helvetica, Arial, sans-serif;
     /* font-weight: 700; */
 }
 

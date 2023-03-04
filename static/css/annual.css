@@ -30,6 +30,7 @@
     cursor: pointer;
 }
 .dropdown-year{
+    letter-spacing:1.3px;
     padding:5px 5px 5px 5px;
 }
 .icon{
@@ -38,9 +39,9 @@
 .dropdown-year-box{
     position: absolute;
     z-index: 32;
-    right: 0;
+    right: 1px;
     display: none;
-    width: 77px;
+    width: 81px;
     height: 85px;
     padding: 2px 0 0 20px;
     border-radius: 3px;
@@ -60,23 +61,24 @@
     margin: 0 50px 0 50px;
     /* width:90%; */
     height:450px;
-    overflow: auto;
+    overflow: overlay;
 }
 table {
-    width: 1600px!important;
+    width: 1850px!important;
     /* border: 2px solid var(--color-white)!important; */
-    font-size: 10px;
+    /* font-size: 10px; */
     position: relative;
 }
+
 /* 左側第一欄的文字顏色*/
 .table-striped tbody td:first-child {
     /* color: var(--color-darkgary)!important; */
     background-color: var(--color-begie);
     cursor: pointer;
 }
-.table-striped tbody td:first-child:hover {
+/* .table-striped tbody td:first-child:hover {
     background-color:  rgb(143, 194, 63);
-}
+} */
 thead {
     position: sticky;
     top: 0;
@@ -84,17 +86,46 @@ thead {
     color: var(--color-white);
     background-color: var(--color-darkgary);  
 }
+thead th{
+    font-size: 14px;
+}
+thead tr th:nth-child(n+3) {
+    cursor: pointer;
+}
 /* 將第一欄固定在左側 */
 th:first-child, td:first-child {
     position: sticky;
     left: 0;
     z-index: 1;
+    width:100px;
     background-color:var(--color-darkgary);
-
 }
+/* thead的tr不變色 */
+thead tr:hover th{
+    background-color: transparent;
+}
+
+tbody tr:hover td {
+    background-color:  rgb(143, 194, 63);
+    cursor: pointer;
+}
+tbody tr:hover td:first-child {
+    background-color:  rgb(143, 194, 63);
+    cursor: pointer;
+}
+tbody td{
+    font-size: 16px;
+}
+
 tr {
     border: 0.5px solid var(--color-darkgary);
 }
+
+/* tr:hover {
+    background-color:  rgb(143, 194, 63);
+    cursor: pointer;
+} */
+
 td {
     font-size: 10px;
     height: 30px;
@@ -105,6 +136,23 @@ td {
 .name{
     width: 60px;
 }
+.column{
+    font-family: proxima-nova, "open Sans", Helvetica, Arial, sans-serif;
+}
+
+.sort-icon-asc:after {
+    content: "\25B2"; /* 上箭头 */
+    color: var(--color-none);
+}
+
+.sort-icon-desc:after {
+    content: "\25BC"; /* 下箭头 */
+    color: var(--color-none);
+
+}
+
+
+
 
 .chart-box{
     display: flex;

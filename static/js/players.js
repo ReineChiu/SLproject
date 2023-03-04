@@ -1,4 +1,3 @@
-let path = window.location.pathname; 
 
 // ============== 建立 環形圖 函式 =============== //
 const doughnutChart = document.getElementById('doughnut');
@@ -33,15 +32,13 @@ const createChart = (chartType, chartData, chartOptions, chartElement) => {
 
 // =========== 建立 table 函式 ============= //
 const createTable = (posCol, allPosRows) =>{
-    const table = document.querySelector(".table") //定位表格
+    const table = document.querySelector(".table") 
     const headTr = table.querySelector("thead tr");
     const tbody = table.querySelector("tbody");
 
     posCol.forEach(item =>{
         const headTh = document.createElement("th");
-        // Create a new column 
         headTh.textContent = item;
-        // headTh.classList.add("column");
         headTr.appendChild(headTh);
         
     })
@@ -50,11 +47,6 @@ const createTable = (posCol, allPosRows) =>{
         item.forEach((col, colIndex) => {
             const newTD = document.createElement("td");
             newTD.textContent = col;
-            // if (colIndex === 0){
-            //     newTD.classList.add("name");
-            // }else{
-            //     newTD.classList.add("column");
-            // }               
             newRow.appendChild(newTD);
         });
         tbody.appendChild(newRow);
@@ -68,15 +60,14 @@ const pitchCol = ["年份","球隊","出賽數","防禦率","被上壘率","先�
                 "奪三振","無四死球","暴投","投手犯規","滾地出局","高飛出局"
                 ]
                 
-// console.log(pitchCol.length)
-
 const fieldCol = ["年份","球隊","出賽數","打擊率","上壘率","長打率","打席","打數","打點","得分","安打","一安","二安",
                 "三安","全壘打","壘打數","四壞","故意四壞","被三振","雙殺打","犧短","犧飛","盜壘","盜壘刺","盜壘率",
                 "滾地出局","高飛出局"
                 ]
-// console.log(fieldCol.length)
 
-fetch(path,{
+const currentPath = window.location.pathname;
+const currentQuery = window.location.search;
+fetch(`api${currentPath}${currentQuery}`,{
     method:"GET",
     headers:{
         "content-Type":"application/json",
@@ -86,7 +77,6 @@ fetch(path,{
     response.json()
 ).then((data) => {
     const info = data.data;
-    // console.log(info)
     if (info[0].retire == "非現役") {
         const retireImage = document.querySelector(".retire");
         const retireImg = document.createElement("img");
@@ -99,7 +89,7 @@ fetch(path,{
     const playerNum = document.querySelector(".num");
     const playerOname = document.querySelector(".o-name");
     
-    playerTeam.textContent = info[0].team;
+    playerTeam.textContent = info[0].army;
     playerName.textContent = info[0].player_name;
     playerNum.textContent = info[0].num;
     playerOname.textContent = info[0].o_name;
@@ -109,7 +99,7 @@ fetch(path,{
     const data2 = document.querySelector(".data2");
     const data3 = document.querySelector(".data3");
 
-    document.title = info[0].player_name + "("+info[0].team+")";
+    document.title = info[0].player_name + "("+info[0].army+")";
 
     const boxTitleData = ["守備位置","投打習慣","學歷",
                         "國籍","生日","初次登場","身高/體重","選秀順位"]
@@ -156,7 +146,7 @@ fetch(path,{
         whipList.unshift(item.pitcher__WHIP)
 
         const pitchRow = [
-            item.pitcher__year,item.pitcher__team,item.pitcher__GP,item.pitcher__ERA,item.pitcher__WHIP,
+            item.pitcher__year,item.team__team_name,item.pitcher__GP,item.pitcher__ERA,item.pitcher__WHIP,
             item.pitcher__GS,item.pitcher__GF,item.pitcher__CG,item.pitcher__SHO,item.pitcher__Win,
             item.pitcher__Lose,item.pitcher__SV,item.pitcher__BS,item.pitcher__HLD,item.pitcher__PA,
             item.pitcher__PC,item.pitcher__IP,item.pitcher__Hits,item.pitcher__HR,item.pitcher__Runs,
@@ -188,7 +178,7 @@ fetch(path,{
         slgList.unshift(item.fielder__SLG);
 
         const fieldRow = [
-            item.fielder__year,item.fielder__team,item.fielder__GP,item.fielder__AVG,item.fielder__OBP,
+            item.fielder__year,item.team__team_name,item.fielder__GP,item.fielder__AVG,item.fielder__OBP,
             item.fielder__SLG,item.fielder__PA,item.fielder__AB,item.fielder__RBI,item.fielder__Runs,
             item.fielder__Hits,item.fielder__one_base,item.fielder__two_base,item.fielder__three_base,
             item.fielder__HR,item.fielder__TB,item.fielder__BB,item.fielder__IBB,item.fielder__SO,
@@ -228,7 +218,6 @@ fetch(path,{
 
         const posImage = document.querySelector(".image-box");
         const Im = document.createElement("img");
-        // Im.src = "/static/images/pitch.png";
         Im.src = "https://d2pr862w3j3gq8.cloudfront.net/stoveleague/pitch.png";
         Im.classList.add("pitchimage")
         posImage.appendChild(Im)
@@ -261,14 +250,14 @@ fetch(path,{
                 label: '防禦率',
                 data: eraList,
                 fill: false,
-                borderColor: 'rgb(213, 31, 67)', // 设置线的颜色
+                borderColor: 'rgb(213, 31, 67)', 
                 backgroundColor: 'rgb(213, 31, 67)',
                 tension: 0.1
             },{
                 label: '被上壘率',
                 data: whipList,
                 fill: true,
-                borderColor: 'rgb(255, 255, 255)', // 设置线的颜色
+                borderColor: 'rgb(255, 255, 255)', 
                 backgroundColor: 'rgb(255, 255, 255, 0.2)',
                 borderWidth: 1,
                 tension: 0.1
@@ -289,7 +278,7 @@ fetch(path,{
         // ============== 數值欄位化 =============== //
         createTable(pitchCol, allPitchRows);
          
-    }else{// 如果不是投手
+    }else{
         latestYear.textContent = info[0].fielder__year;
         const data1UpText = document.createElement("div");
         const data1DownText = document.createElement("div");
@@ -329,14 +318,14 @@ fetch(path,{
                 label: '打擊率',
                 data: avgList,
                 fill: false,
-                borderColor: 'rgb(213, 31, 67)', // 设置线的颜色
+                borderColor: 'rgb(213, 31, 67)', 
                 backgroundColor: 'rgb(213, 31, 67)',
                 tension: 0.1
             },{
                 label: '長打率',
                 data: slgList,
                 fill: false,
-                borderColor: 'rgb(29, 46, 93)', // 设置线的颜色
+                borderColor: 'rgb(29, 46, 93)', 
                 backgroundColor: 'rgb(29, 46, 93)',
                 borderWidth: 1,
                 tension: 0.1
@@ -344,7 +333,7 @@ fetch(path,{
                 label: '上壘率',
                 data: obpList,
                 fill: true,
-                borderColor: 'rgb(255, 255, 255)', // 设置线的颜色
+                borderColor: 'rgb(255, 255, 255)', 
                 backgroundColor: 'rgb(255, 255, 255, 0.2)',
                 borderWidth: 1,
                 tension: 0.1

@@ -1,6 +1,5 @@
 document.title = "StoveLeague";
 const url = "api/getranking";
-// const checkPlayer = document.getElementById('search-text');
 const errorBox = document.querySelector(".error-box");
 const sendBtn = document.querySelector(".send-btn");
 const playerMenu = document.querySelector(".player-menu");
@@ -39,47 +38,33 @@ const checkData = (url) => {
 }  
 // ============ 建立比對隊名-圖片function ============== //
 const setTeamImg = (item, type, posRankImg) => {
-    const brRegex = /中信/;
-    const mkRegex = /樂天/;
-    const gdRegex = /富邦/;
-    const dgRegex = /味全/;
-    const ulRegex = /統一/;
-    const epRegex = /^兄弟$/;
-    const lmRegex = /Lamigo/;
-    const snRegex = /興農/;
-    const riRegex = /義大/;
-    const trRegex = /米迪亞/;
-    const mtRegex = /誠泰/;
-    const whRegex = /^中信$/;
-    const fiRegex = /第一/;
-    let image = '';
-    if (item.team.match(brRegex)) {
-        image = "brothers.png";
-    } else if (item.team.match(mkRegex)){
-        image = "rakuten.png";
-    } else if (item.team.match(gdRegex)){
-        image = "guardians.png";
-    } else if (item.team.match(dgRegex)){
-        image = "dragons.png";
-    } else if (item.team.match(ulRegex)) {
+    if (item.team === 1){
         image = "lions.png";
-    } else if (item.team.match(epRegex)) {
+    } else if (item.team === 2){
         image = "elephant.png";
-    } else if (item.team.match(lmRegex)) {
-        image = "lamigo.png";
-    } else if (item.team.match(snRegex)) {
+    } else if (item.team === 3){
         image = "sinon.png";
-    } else if (item.team.match(riRegex)) {
-        image = "rhino.png";
-    } else if (item.team.match(trRegex)) {
-        image = "trex.png";
-    } else if (item.team.match(mtRegex)) {
-        image = "macoto.png";
-    } else if (item.team.match(whRegex)) {
+    } else if (item.team === 4){
         image = "wheel.png";
-    } else if (item.team.match(fiRegex)) {
+    } else if (item.team === 5){
         image = "first.png";
-    }
+    } else if (item.team === 6){
+        image = "macoto.png";
+    } else if (item.team === 7){
+        image = "trex.png";
+    } else if (item.team === 8){
+        image = "lamigo.png";
+    } else if (item.team === 9){
+        image = "rhino.png";
+    } else if (item.team === 10){
+        image = "brothers.png";
+    } else if (item.team === 11){
+        image = "guardians.png";
+    } else if (item.team === 12){
+        image = "dragons.png";
+    } else if (item.team === 13){
+        image = "rakuten.png";
+    } 
     if (type === 'field') {
         posRankImg.src = imgUrl + image;
     } else if (type === 'pitch') {
@@ -116,7 +101,6 @@ const updateFieldRank = (rankData) => {
     })
 }
 getData(url, csrftoken, formData).then((data) => {
-    // console.log(data)
     updateFieldRank(data)
 })
 
@@ -153,10 +137,11 @@ getData(url, csrftoken, formData).then((data) => {
 
 // ============ 即時輸入 ============== //
 const inputText = document.getElementById("search-text");
+const errorTip = document.createElement("div");
+
 inputText.addEventListener("input", (e)=>{
     e.stopPropagation();
     const instantText = e.target.value
-    // console.log(instantText)
     while (playerMenu.hasChildNodes()){ 
         playerMenu.removeChild(playerMenu.firstChild);
     }
@@ -166,7 +151,6 @@ inputText.addEventListener("input", (e)=>{
 
     getData("api/getplayername", csrftoken, formData).then((data) => {
         if ("ok" in data){
-            console.log(data)
             data.data.forEach(ele =>{
                 const playerItem = document.createElement("div");
                 const inputPlayerTeam = document.createElement("img");
@@ -190,65 +174,48 @@ inputText.addEventListener("input", (e)=>{
                         e.stopPropagation();
                         const chooseName = e.target.textContent.trim();
                         const chooseId = e.target.getAttribute('data-serial');
-                        formData.append("searchname", `${chooseName}`);
-                        formData.append("searchid", `${chooseId}`);
-                        const csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-                        getData("api/checkplayer", csrftoken, formData).then((data) => {
+                        const url = `api/checkplayer?num=${chooseId}&name=${chooseName}`;
+                        checkData(url).then((data) => {
                             if ("ok" in data){
-                                location.href = "/players/"+e.target.getAttribute('data-serial');
+                                location.href =`player?num=${chooseId}`;
+
                             }else{
                                 playerMenu.style.display = "none";
                                 errorBox.style.display = "flex";
-                                const errorTip = document.createElement("div");
                                 errorTip.textContent = "這樣是查不到球員滴～\n<般耶波羅密>";
                                 errorTip.classList.add("error-name");
                                 errorBox.appendChild(errorTip);
                             }
+
                         })
                     })
                 })
             })
-        }       
+        } 
     })
 })
-// =============== 依據輸入姓名查詢選手 ================== //
-// 
-// sendBtn.addEventListener("click", () =>{
-//     const searchText = document.getElementById("search-text").value;
-//     formData.append("newname", searchText)
-//     const csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-//     // for (const [key, value] of formData.entries()) {
-//     //     console.log(`${key}: ${value}`);
-//     // }
-//     fetch("api/getplayerid", {
-//         method:"POST",
-//         headers:{
-//             'X-CSRFToken': csrftoken  
-//         },
-//         body:formData
-//     })
-//     .then(res => {
-//         return res.json();
-//     }).then(data => {
-//         if ("ok" in data){
-//             playerid = data.data[0].id
-//             location.href = "/players/"+playerid;
-//         }else{
-//             checkPlayer.addEventListener("click", () => {
-//                 while (errorBox.hasChildNodes()){ 
-//                     errorBox.removeChild(errorBox.firstChild);
-//                 }    
-//             })           
-//             errorBox.style.display = "flex";
-//         }
-//     })
-// })
+
+inputText.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        formData.append("name", inputText.value);
+        const csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        getData("api/getplayername", csrftoken, formData).then((data) => {
+            if ("error" in data){
+                errorBox.style.display = "block";
+                errorTip.textContent = "沒有這個球員";
+                errorTip.classList.add("error-name");
+                errorBox.appendChild(errorTip);
+            }
+        })
+    }
+})
+
 
 // ================= 年度排行榜 ================= //
 const fieldYearsMenu = document.querySelector(".field-years-frame");
 const pitchYearsMenu = document.querySelector(".pitch-years-frame");
 
-const years = Array.from({length: 20}, (_, i) => 2022 - i);//創建一個內容為20個元素（從0到19）的陣列，並使用該元素的索引對2022進行减法，以創建陣列中的每一個元素。
+const years = Array.from({length: 20}, (_, i) => 2022 - i);
 
 years.forEach(ele =>{
     const year = document.createElement("div");
@@ -327,12 +294,108 @@ const clickAnnualBtn = (btnItem, pos) =>{
             } else {
                 location.href = "/";
             }
-        });       
+        });
     })
 }
 clickAnnualBtn(fieldAnnualBtn, "field");
 clickAnnualBtn(pitchAnnualBtn, "pitch");
 
+// ================= 顯示時間 ================= //
+const today = new Date();
+let dd = String(today.getDate()).padStart(2, '0');
+let mm = String(today.getMonth() + 1).padStart(2, '0');
+let yyyy = today.getFullYear();
+currentday = yyyy + '-' + mm + '-' + dd;
 
+// ================= 顯示比賽資訊 ================= //
+const gameCalendarBox = document.querySelector(".game-calendar-box");
+const leftBtn = document.querySelector(".fa-chevron-left");
+const rightBtn = document.querySelector(".fa-chevron-right");
+leftBtn.addEventListener('click', function() {
+    gameCalendarBox.scrollLeft -= 180; 
+});
+rightBtn.addEventListener('click', function() {
+    gameCalendarBox.scrollLeft += 180;  
+});
+const noGame = document.querySelector(".no-game");
+const gameDetail = document.querySelector(".game-detail");
 
+const gameTime = document.querySelector(".time");
+const gameLocation = document.querySelector(".location");
+const guestTeam = document.getElementById("guest-team");
+const guestScore = document.getElementById("guest-score");
+const homeTeam = document.getElementById("home-team");
+const homeScore = document.getElementById("home-score");
+const guestPitch = document.querySelector(".guest-pitch");
+const homePitch = document.querySelector(".home-pitch");
+const winPitch = document.querySelector(".win-pitch");
+const losePitch = document.querySelector(".lose-pitch");
+const mvp = document.querySelector(".mvp");
+
+const guestError = document.querySelector(".guest-error");
+const homeError = document.querySelector(".home-error");
+
+gameTime.textContent = currentday;
+fetch(`api/getgame`).then(response => response.json()).then((data) => {
+    data.data.forEach(item =>{
+        let date = new Date(item.date); 
+        let weekday = ['日', '一', '二', '三', '四', '五', '六'];
+        let week = weekday[date.getUTCDay()];
+        let year = date.getUTCFullYear();
+        let month = String(date.getUTCMonth() + 1).padStart(2, '0'); 
+        let day = String(date.getUTCDate()).padStart(2, '0');
+        let hours = date.getUTCHours();
+        let minutes = String(date.getUTCMinutes()).padStart(2, '0');
+        let gameDate = `${year}.${month}.${day} (${week})`;
+        let gameTime = `${hours}:${minutes}`;
+
+        if (date >= new Date()){
+            const gameCalendar = document.createElement('div');
+            gameCalendar.classList.add('game-calendar');
+            const gamePlayDate = document.createElement('div');
+            const gamePlayTime = document.createElement('div');
+            const guestTeam = document.createElement('div');
+            const homeTeam = document.createElement('div');
+            gamePlayDate.textContent = gameDate;
+            gamePlayDate.classList.add('game-play-date');
+            gamePlayTime.textContent = gameTime;
+            gamePlayTime.classList.add('game-play-time');
+            guestTeam.textContent = item.guestTeam;
+            guestTeam.classList.add('text');
+            homeTeam.textContent = item.homeTeam;
+            homeTeam.classList.add('text');
+            if (item.guestTeam.includes('Taipei') || item.homeTeam.includes('Taipei')) {
+                guestTeam.classList.add('text-color');
+                homeTeam.classList.add('text-color');
+            }
+            gameCalendar.appendChild(gamePlayDate);
+            gameCalendar.appendChild(gamePlayTime);
+            gameCalendar.appendChild(guestTeam);
+            gameCalendar.appendChild(homeTeam);
+
+            gameCalendarBox.appendChild(gameCalendar);
+        }
+
+        if (date.getDate() === today.getDate()) {
+            console.log('日期相同');
+            noGame.style.display = 'none';
+            gameDetail.style.display = 'block';
+            gameLocation.textContent = 'MLB'
+            guestTeam.textContent = item.guestTeam;
+            guestScore.textContent = item.guestScore;
+            homeTeam.textContent = item.homeTeam;
+            homeScore.textContent = item.homeScore;
+            guestPitch.textContent = '安打：'+ item.location; 
+            homePitch.textContent =  '安打：'+ item.homePitch; 
+            winPitch.textContent = '勝投：'+item.winPitch;
+            losePitch.textContent = '敗投：'+item.losePitch;
+            guestError.textContent = '失誤：'+item.mvp;
+            homeError.textContent = '失誤：'+item.guestPitch;
+        } else {
+            noGame.textContent = '今日無賽事';
+            noGame.style.display = 'block';
+            gameDetail.style.display = 'none';
+        }       
+    })
+})
 
