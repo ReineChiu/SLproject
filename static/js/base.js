@@ -43,7 +43,6 @@ teamLogo.forEach(item =>{
         const src = e.target.src;
         const parts = src.split('/');
         const lastPart = parts.pop();
-        console.log(lastPart)
         const teamCode = lastPart.split('.');
         const code = teamCode[0]
         const url = `api/team?code=${code}`;

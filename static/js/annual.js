@@ -144,7 +144,6 @@ getAnnualData(url, csrftoken, formData).then((data) => {
 
         tableHeader.addEventListener("click", function(e) {
             columnIndex = Array.from(e.target.parentNode.children).indexOf(e.target);// 取得選取欄位在第幾位，便於排列同一欄位的row值
-            console.log(columnIndex)
             const otherHeaders = document.querySelectorAll("table thead tr th:not(:nth-child(" + (columnIndex + 1) + "))");
             for (let header of otherHeaders) {
                 header.classList.remove("sort-icon-asc");
@@ -229,7 +228,6 @@ getAnnualData(url, csrftoken, formData).then((data) => {
 
         tableHeader.addEventListener("click", function(e) {
             columnIndex = Array.from(e.target.parentNode.children).indexOf(e.target);
-            console.log(columnIndex)
             // 刪除其他元素的 sort-icon-asc 和 sort-icon-desc 類別
             const otherHeaders = document.querySelectorAll("table thead tr th:not(:nth-child(" + (columnIndex + 1) + "))");
             for (let header of otherHeaders) {

@@ -29,7 +29,6 @@ const teamPlayers = document.querySelector(".team-players");
 
 
 getTeamPlayerData(url1, csrftoken, formData).then((data) => {
-    console.log(data)
     const playerList = data.data;
     const teamOrder = [
         ['統一7-ELEVEn獅','統一7-ELEVEn獅二軍'],
@@ -46,7 +45,6 @@ getTeamPlayerData(url1, csrftoken, formData).then((data) => {
     });
 
     playerList.forEach(item => {   
-        console.log(item)
         teamMap.get(item.army).push(item);
     });
     const firstTeam = document.createElement('div');
@@ -73,7 +71,6 @@ getTeamPlayerData(url1, csrftoken, formData).then((data) => {
             });
 
             playerArr.forEach(player => {
-                console.log(player)
                 const playerName = document.createElement('a');
                 playerName.href = `/player?num=${player.id}`;
                 if(/二軍/.test(player.army)) {

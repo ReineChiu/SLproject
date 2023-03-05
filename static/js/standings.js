@@ -258,7 +258,6 @@ allfieldyear.forEach(item =>{
         formData.append("fieldyear", fieldYearTitle.textContent);
         const csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
         getData(url, csrftoken, formData).then((data) => {
-            console.log(data)
             updateFieldRank(data)
         }) 
     })
