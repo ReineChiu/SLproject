@@ -13,7 +13,7 @@ const formData = new FormData();
 
 const getTeamPlayerData = (url, csrftoken, formData) => {
     return fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
         'X-CSRFToken': csrftoken
       },
@@ -21,11 +21,11 @@ const getTeamPlayerData = (url, csrftoken, formData) => {
     }).then(response => response.json())
 }  
 
-const csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-formData.append("code", code);
+const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+formData.append('code', code);
 const url1 ='api/getTeamPlayer';
 
-const teamPlayers = document.querySelector(".team-players");
+const teamPlayers = document.querySelector('.team-players');
 
 
 getTeamPlayerData(url1, csrftoken, formData).then((data) => {
@@ -47,6 +47,8 @@ getTeamPlayerData(url1, csrftoken, formData).then((data) => {
     playerList.forEach(item => {   
         teamMap.get(item.army).push(item);
     });
+    // 
+
     const firstTeam = document.createElement('div');
     const firstTeamTitle = document.createElement('div');
     const firstTeamPlayers = document.createElement('div');
@@ -80,14 +82,14 @@ getTeamPlayerData(url1, csrftoken, formData).then((data) => {
                     playerName.textContent = player.player_name;
                     firstTeamPlayers.appendChild(playerName)
                 }
-                playerName.classList.add("player-name");
-                secondTeamPlayers.classList.add("second-team-players");
-                firstTeamPlayers.classList.add("first-team-players");
-                secondTeam.classList.add("second-team");
-                firstTeam.classList.add("first-team");
-                hr.classList.add("hr");
+                playerName.classList.add('player-name');
+                secondTeamPlayers.classList.add('second-team-players');
+                firstTeamPlayers.classList.add('first-team-players');
+                secondTeam.classList.add('second-team');
+                firstTeam.classList.add('first-team');
+                hr.classList.add('hr');
 
-                teamPlayers.classList.add("team-players-box");
+                teamPlayers.classList.add('team-players-box');
                 
                 firstTeam.appendChild(firstTeamPlayers);
                 
@@ -101,13 +103,13 @@ getTeamPlayerData(url1, csrftoken, formData).then((data) => {
     }); 
 })       
 
-const teamBtn = document.querySelectorAll(".nav-link")
+const teamBtn = document.querySelectorAll('.nav-link')
 
 teamBtn.forEach(item => {
-    item.addEventListener("click", () => {
+    item.addEventListener('click', () => {
         const teamName = item.getAttribute('data-code')
-        document.querySelectorAll(".add-team-box").forEach((checkedItem) => {
-            checkedItem.classList.remove("add-team-box");
+        document.querySelectorAll('.add-team-box').forEach((checkedItem) => {
+            checkedItem.classList.remove('add-team-box');
         });
         item.classList.add('add-team-box');
         let url = new URL(window.location.href);

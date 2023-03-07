@@ -15,11 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
+# from django.conf.urls import handler404
 
-# from message.views import message, uploadFile, getFile
-from standings.views import standings, getPlayerName, checkPlayer, getRanking, Players#, players_name
-from teams.views import teams, getTeams
-from annual.views import annual, getAnnual, getAnnualData, getPlayerInfo
+from standings.views import standings, getPlayerName, checkPlayer, getRanking, getGame, Player, getPlayerData#, players_name
+from teams.views import teams, checkTeam, getTeamPlayer
+from annual.views import annual, checkAnnual, getAnnualData, getPlayerInfo
 
 
 urlpatterns = [
@@ -27,13 +27,15 @@ urlpatterns = [
     path('', standings),
     path('api/getplayername', getPlayerName),
     path('api/checkplayer', checkPlayer),
-    path('players/<int:_id>', Players),
+    path('player', Player),
+    path('api/player', getPlayerData),
     path('api/getranking', getRanking),
-    # path('api/getPosData', getPosData),
+    path('api/getgame', getGame),
     path('teams', teams),
-    path('api/getTeams', getTeams),
+    path('api/team', checkTeam),
+    path('api/getTeamPlayer', getTeamPlayer),
     path('annual', annual), 
-    path('api/annual', getAnnual),
+    path('api/annual', checkAnnual),
     path('api/annualdata', getAnnualData),  
     path('api/getPlayerInfo', getPlayerInfo),
 ]

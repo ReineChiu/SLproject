@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class Team(models.Model):
     team_name = models.CharField(max_length=20)
     home = models.CharField(max_length=30,null=True)
@@ -9,7 +8,7 @@ class All_player(models.Model):
     player_name = models.CharField(max_length=10, db_index=True) 
     army = models.CharField(max_length=30)
     num = models.CharField(max_length=10)
-    pos = models.CharField(max_length=10)
+    pos = models.CharField(max_length=10) 
     habits = models.CharField(max_length=10)
     height = models.CharField(max_length=5)
     weight = models.CharField(max_length=5)

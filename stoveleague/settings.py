@@ -16,7 +16,6 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -85,29 +84,17 @@ WSGI_APPLICATION = 'stoveleague.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# 資料庫改設定為 mysql
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django',#os.getenv("LOCAL_DATABASE_NAME"), # database Name
-        'USER': os.getenv("LOCAL_USERNAME"),  # mysql 使用者名稱
-        'PASSWORD': os.getenv("LOCAL_PASSWORD"),  # 資料庫的密碼
-        'HOST': os.getenv("LOCAL_HOST"),  # 資料庫服務地址， 這裡我們是測試開發 填本地地址 
-        'PORT': '3306',   # mysql 對應的埠號 
-        'default-character-set': "UTF8",  # 設定編碼規則 utf8 
+        'NAME': 'django',
+        'USER': os.getenv("LOCAL_USERNAME"),
+        'PASSWORD': os.getenv("LOCAL_PASSWORD"), 
+        'HOST': os.getenv("LOCAL_HOST"),
+        'PORT': '3306',  
+        'default-character-set': "UTF8",
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'django',#os.getenv("LOCAL_DATABASE_NAME"), # database Name
-#         'USER': os.getenv("RDS_USERNAME"),  # mysql 使用者名稱
-#         'PASSWORD': os.getenv("RDS_PASSWORD"), # 資料庫的密碼
-#         'HOST': os.getenv("RDS_HOST"), # 資料庫服務地址， 這裡我們是測試開發 填本地地址 
-#         'PORT': '3306',   # mysql 對應的埠號 
-#         'default-character-set': "UTF8",  # 設定編碼規則 utf8 
-#     }
-# }
 
 
 # Password validation
@@ -147,7 +134,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / 'static',
 ]
 
 # Default primary key field type
@@ -158,9 +145,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' # 上傳的檔案，自動儲存至Amazon S3儲存體，而不會放置在Django專案中
 #Amazon S3 Configuration
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID") #存取金鑰ID
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")  #私密存取金鑰
-AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")  #Amazon S3儲存體名稱
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID') #存取金鑰ID
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')  #私密存取金鑰
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')  #Amazon S3儲存體名稱
 AWS_STORAGE_BUCKET_FOLDER = 'stoveleague/'  #Amazon S3儲存體資料夾名稱
 
 AWS_QUERYSTRING_AUTH = False
@@ -168,11 +155,11 @@ AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = False  #同名檔案是否要覆寫
 AWS_DEFAULT_ACL = None
 
-# # CORS
-# CORS_ALLOW_ALL_ORIGINS = True
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True
 
-# # CSRF Token
-# CSRF_COOKIE_DOMAIN = '.stoveleague.online'
-# CSRF_TRUSTED_ORIGINS = [
-#     'https://*.stoveleague.online'
-# ]
+# CSRF Token
+CSRF_COOKIE_DOMAIN = '.stoveleague.online'
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.stoveleague.online'
+]

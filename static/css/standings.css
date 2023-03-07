@@ -23,7 +23,6 @@ main{
 
 .background-image{
     display: flex;
-    /* justify-content: right;   */
 }
 .backimages{
     width:750px;
@@ -33,7 +32,7 @@ main{
     position: relative;
     z-index: 11;
     width: 1000px;
-    left: -500px;
+    left: -600px;
     top: 0;
 
 }
@@ -61,8 +60,6 @@ main{
     justify-content: center;
 }
 input{
-    /* width: 200px; */
-    /* height: 32px; */
     padding: 10px 10px;
     font-size: 16px;
     border-radius: 3px 3px 3px 3px;
@@ -71,19 +68,10 @@ input{
 input:focus{
     outline: none;
 }
-/* .send-btn{
-    border: 1px solid var(--color-white);
-    border-radius: 0 3px 3px 0;
-    width:50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-} */
 .player-menu{
     display: block;
     width: 198px;
-    max-height: 170px;/*245px;*/
+    max-height: 170px;
     overflow:auto;
     margin:2px 0 0 0 ;
     border:0;
@@ -130,9 +118,7 @@ input:focus{
     right: -50px;
 
     display:block;
-    /* justify-content: center; */
     width: 600px;
-    /* border: 1px solid var(--color-white); */
     border-radius: 5px 5px 5px 5px;
     background-color:  rgba(255,255,255, 0.7);
 }
@@ -184,10 +170,6 @@ input:focus{
     margin:0 5px 0 5px;
     color: var(--color-bred);
 }
-/* .home-score{
-    font-size: 20px;
-    margin:0 5px 0 5px; 
-} */
 .colon{
     font-size: 24px;
 }
@@ -199,7 +181,6 @@ input:focus{
 .start-pitch{
     display: flex;
     justify-content: center;
-    /* width: 150px; */
 }
 .guest-pitch{
     display: flex;
@@ -232,7 +213,6 @@ input:focus{
     right: -50px;
 
     display:block;
-    /* justify-content: center; */
     width: 600px;
     border-radius: 5px 5px 5px 5px;
     background-color:  rgba(255,255,255, 0.7);
@@ -240,10 +220,6 @@ input:focus{
 .title-text{
     font-family: 'Nunito Sans', sans-serif;
 }
-/* .location{
-    display: flex;
-    justify-content: right;
-} */
 .no-game{
     display: none;
 }
@@ -253,10 +229,6 @@ input:focus{
 
 .show-future-game{
     display:flex;
-    /* margin: 0 20px 0 20px; */
-    /* padding: 0 0 20px 0;
-    width:560px;
-    overflow:auto; */
 }
 .left-arrow{
     display: flex;
@@ -268,7 +240,6 @@ input:focus{
 }
 .game-calendar-box{
     display:flex;
-    /* margin: 0 20px 0 20px; */
     padding: 0 10px 20px 20px;
     width:560px;
     overflow-x: overlay;
@@ -312,10 +283,9 @@ input:focus{
     position: absolute;
     z-index: 12;
     top: 50px;
-    right: -350px;
+    right: -400px;
 
     display:block;
-    /* justify-content: center; */
     width: 200px;
     border: 1px solid var(--color-white);
     border-radius: 5px 5px 5px 5px;
@@ -349,7 +319,6 @@ hr{
     width:96%; 
     border-width:0.5; 
     color:var(--color-hr); 
-    /* background-color:var(--color-hr); */
     margin: 0;
     opacity: 1;
 }
@@ -357,7 +326,7 @@ hr{
     position: absolute;
     z-index: 12;
     top: 390px;
-    right: -350px;
+    right: -400px;
 
     display:block;
     width: 200px;
@@ -377,12 +346,10 @@ hr{
 }
 .field-year-title{
     font-size: 16px;
-    /* font-family: 'Nunito Sans', sans-serif; */
     letter-spacing:1.3px;
 }
 .pitch-year-title{
     font-size: 16px;
-    /* font-family: 'Nunito Sans', sans-serif; */
     letter-spacing:1.3px;
 }
 

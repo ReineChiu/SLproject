@@ -12,28 +12,97 @@
     --color-red: #aa0808;
     --color-brothers:rgb(242, 226, 5);
     --color-brothers2:rgb(197, 188, 62);
-    --color-monkeys:rgb(168, 3, 8);
+    --color-monkeys:#a80308;
     --color-guardians:rgb(3, 102, 207);
     --color-dragons:rgb(249, 26, 26);
     --color-lions:rgb(242, 112, 5);
     --color-navy: rgb(29, 46, 93);
     --color-bred: rgb(213, 31, 67);
     --color-begie: rgb(231, 212, 139);
-    --color-none: rgb(143, 194, 63);
+    --color-none: #8fc23f;
     --color-glod:rgba(189,172,137)
 }
 
+
+
 main{
     display:block;
-    /* justify-content: center;
-    align-items: center; */
 }
 
+.lds-grid {
+    display: inline-block;
+    position: relative;
+    width: 160px;
+    height: 160px;
+    left:600px;
+    top:200px;
+  }
+  .lds-grid div {
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background:#a80308;
+    animation: lds-grid 1.2s linear infinite;
+  }
+  .lds-grid div:nth-child(1) {
+    top: 8px;
+    left: 8px;
+    animation-delay: 0s;
+  }
+  .lds-grid div:nth-child(2) {
+    top: 8px;
+    left: 80px;
+    animation-delay: -0.4s;
+  }
+  .lds-grid div:nth-child(3) {
+    top: 8px;
+    left: 152px;
+    animation-delay: -0.8s;
+  }
+  .lds-grid div:nth-child(4) {
+    top: 80px;
+    left: 8px;
+    animation-delay: -0.4s;
+  }
+  .lds-grid div:nth-child(5) {
+    top: 80px;
+    left: 80px;
+    animation-delay: -0.8s;
+  }
+  .lds-grid div:nth-child(6) {
+    top: 80px;
+    left: 152px;
+    animation-delay: -1.2s;
+  }
+  .lds-grid div:nth-child(7) {
+    top: 152px;
+    left: 8px;
+    animation-delay: -0.8s;
+  }
+  .lds-grid div:nth-child(8) {
+    top: 152px;
+    left: 80px;
+    animation-delay: -1.2s;
+  }
+  .lds-grid div:nth-child(9) {
+    top: 152px;
+    left: 152px;
+    animation-delay: -1.6s;
+  }
+  @keyframes lds-grid {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
 .information{
-    display: flex;
+    display: none;
     justify-content: center;   
     margin: 30px 0 0 0;
-     /* align-items: center; */
 }
 .frame{
     display: flex;
@@ -45,9 +114,7 @@ main{
     z-index: 20;
     display: flex;
     justify-content: center;
-
     width: 500px;
-    /* overflow: hidden; */
 }
 .fieldimage{
     position: absolute;
@@ -78,7 +145,6 @@ main{
     font-size: 280px;
     opacity: 0.8;
     color:var(--color-navy);
-    /* margin: 0 30px 0 30px; */
 }
 .team{
     position: absolute;
@@ -177,8 +243,6 @@ main{
 }
 .card-body{
     display: flex;
-    /* padding: 10px 10px 10px 10px; */
-    /* color:var(--color-white); */
 }
 .other-info{
     display: block;
@@ -207,8 +271,6 @@ main{
     color:var(--color-navy);
 }
 
-
-
 .diagram{
     display: flex;
     justify-content: right;
@@ -226,11 +288,9 @@ main{
 }
 
 .digital {
-    display: flex;
+    display: none;
     justify-content: center;
     margin: 30px 0 0 0 ;
-
-    /* font-size: 10px; */
 }
 .dig-box{
     width:1200px;
@@ -240,15 +300,11 @@ table {
     border: 2px solid var(--color-white)!important;
     font-size: 10px;
     font-family: proxima-nova, "open Sans", Helvetica, Arial, sans-serif;
-    /* font-weight: 700; */
 }
 
 tr {
     border: 0.5px solid var(--color-darkgary);
 }
-/* th {
-    height: 90px;
-} */
 td {
     font-size: 10px;
     height: 30px;
