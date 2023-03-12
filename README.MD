@@ -19,6 +19,7 @@ scending
 
 [Architecture](#architecture)  
 [Data Pipeline](#data-pipeline)  
+[Database Schema](#database-schema)  
 
 ## Backend Technique
 
