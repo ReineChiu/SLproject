@@ -9,7 +9,6 @@ player comparison
 scending 
 ![Alt text](static/images/scending.gif)
 
-
 [Backend Technique](#backend-technique)  
 - [Environment](#environment)  
 - [Database](#database)  
