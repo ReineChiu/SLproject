@@ -4,7 +4,7 @@
 ## Demo  
 player comparison  
 - Schedule data updates using crontab.
-![Alt text](static/images/search.gif)  
+ ![Alt text](static/images/search.gif)
  
 scending 
 ![Alt text](static/images/scending.gif)
