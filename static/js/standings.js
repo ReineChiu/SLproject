@@ -138,64 +138,79 @@ getData(url, csrftoken, formData).then((data) => {
 // ============ 即時輸入 ============== //
 const inputText = document.getElementById('search-text');
 const errorTip = document.createElement('div');
+let timerId = null // 計時器
 
 inputText.addEventListener('input', (e)=>{
     e.stopPropagation();
     const instantText = e.target.value
+   
     while (playerMenu.hasChildNodes()){ 
         playerMenu.removeChild(playerMenu.firstChild);
     }
+
+    if (timerId != null) {
+        clearTimeout(timerId);
+    }
+
     formData.append('name', instantText);
     const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
     errorBox.style.display = 'none';
 
-    getData('api/getplayername', csrftoken, formData).then((data) => {
-        if ('ok' in data){
-            data.data.forEach(ele =>{
-                const playerItem = document.createElement('div');
-                const inputPlayerTeam = document.createElement('img');
-                const inputPlayerName = document.createElement('div');
-                playerItem.classList.add('player-item');
-                inputPlayerTeam.classList.add('team-image');
-                inputPlayerName.textContent = ele.player_name;
-                inputPlayerName.classList.add('input-player-name');
-                inputPlayerName.setAttribute('data-serial', ele.id);
-                playerItem.appendChild(inputPlayerTeam);
-                playerItem.appendChild(inputPlayerName);
-                playerMenu.appendChild(playerItem);
-                playerMenu.style.display = 'block';
+    timerId = setTimeout(() =>{
+        getData('api/getplayername', csrftoken, formData).then((data) => {
+            if ('ok' in data){
+                data.data.forEach(ele =>{
+                    const playerItem = document.createElement('div');
+                    const inputPlayerTeam = document.createElement('img');
+                    const inputPlayerName = document.createElement('div');
+                    playerItem.classList.add('player-item');
+                    inputPlayerTeam.classList.add('team-image');
+                    inputPlayerName.textContent = ele.player_name;
+                    inputPlayerName.classList.add('input-player-name');
+                    inputPlayerName.setAttribute('data-serial', ele.id);
+                    playerItem.appendChild(inputPlayerTeam);
+                    playerItem.appendChild(inputPlayerName);
+                    playerMenu.appendChild(playerItem);
+                    playerMenu.style.display = 'block';
 
-                // === 模糊比對 隊名&圖示 === //
-                setTeamImg(ele, 'search', inputPlayerTeam)
+                    // === 模糊比對 隊名&圖示 === //
+                    setTeamImg(ele, 'search', inputPlayerTeam)
 
-                const newName = document.querySelectorAll('.input-player-name');
-                newName.forEach(item =>{
-                    item.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const chooseName = e.target.textContent.trim();
-                        const chooseId = e.target.getAttribute('data-serial');
-                        const url = `api/checkplayer?num=${chooseId}&name=${chooseName}`;
-                        checkData(url).then((data) => {
-                            if ("ok" in data){
-                                location.href =`player?num=${chooseId}`;
-                            }else{
-                                playerMenu.style.display = 'none';
-                                errorBox.style.display = 'flex';
-                                errorTip.textContent = '這樣是查不到球員滴～\n<般耶波羅密>';
-                                errorTip.classList.add('error-name');
-                                errorBox.appendChild(errorTip);
-                            }
+                    const newName = document.querySelectorAll('.input-player-name');
+                    newName.forEach(item =>{
+                        item.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const chooseName = e.target.textContent.trim();
+                            const chooseId = e.target.getAttribute('data-serial');
 
+                            formData.append("searchname", `${chooseName}`);
+                            const csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                            const url = `api/checkplayer/${chooseId}`;
+                            getData(url, csrftoken, formData).then((data) => {
+                                console.log(data)
+                                if ("ok" in data){
+                                    location.href =`player/${chooseId}`;
+                                }else{
+                                    playerMenu.style.display = 'none';
+                                    errorBox.style.display = 'flex';
+                                    errorTip.textContent = '這樣是查不到球員滴～\n<般耶波羅密>';
+                                    errorTip.classList.add('error-name');
+                                    errorBox.appendChild(errorTip);
+                                }
+                            })
                         })
                     })
                 })
-            })
-        } 
-    })
+            } 
+        })
+    },500);
 })
 
 inputText.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
+        if (timerId != null) {
+            clearTimeout(timerId);
+        }
         formData.append("name", inputText.value);
         const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
         getData('api/getplayername', csrftoken, formData).then((data) => {
@@ -206,7 +221,7 @@ inputText.addEventListener('keydown', (event) => {
                 errorBox.appendChild(errorTip);
             } else {
                 if (data.data.length === 1){
-                    location.href =`player?num=${data.data[0].id}`;
+                    location.href =`/player/${data.data[0].id}`;
                 }               
             }
         })
@@ -309,36 +324,89 @@ let mm = String(today.getMonth() + 1).padStart(2, '0');
 let yyyy = today.getFullYear();
 currentday = yyyy + '-' + mm + '-' + dd;
 
-// ================= 顯示比賽資訊 ================= //
+// ================= 顯示預告比賽資訊 ================= //
 const gameCalendarBox = document.querySelector('.game-calendar-box');
 const leftBtn = document.querySelector('.fa-chevron-left');
 const rightBtn = document.querySelector('.fa-chevron-right');
 leftBtn.addEventListener('click', function() {
-    gameCalendarBox.scrollLeft -= 180; 
+    gameCalendarBox.scrollLeft -= 180;  
 });
 rightBtn.addEventListener('click', function() {
-    gameCalendarBox.scrollLeft += 180;
+    gameCalendarBox.scrollLeft += 180; 
 });
 const noGame = document.querySelector('.no-game');
 const gameDetail = document.querySelector('.game-detail');
 
-const gameTime = document.querySelector('.time');
-const gameLocation = document.querySelector('.location');
-const guestTeam = document.getElementById('guest-team');
-const guestScore = document.getElementById('guest-score');
-const homeTeam = document.getElementById('home-team');
-const homeScore = document.getElementById('home-score');
-const guestPitch = document.querySelector('.guest-pitch');
-const homePitch = document.querySelector('.home-pitch');
-const winPitch = document.querySelector('.win-pitch');
-const losePitch = document.querySelector('.lose-pitch');
-const mvp = document.querySelector('.mvp');
+const gameTimeLocal = document.querySelector('.time-local');
 
-const guestError = document.querySelector('.guest-error');
-const homeError = document.querySelector('.home-error');
+const gameTime = document.querySelector('.time');
+const gameScoreInfo = document.querySelector('.game-score-info');
 
 gameTime.textContent = currentday;
+
+// ================= 顯示當日比賽資訊 ================= //
+let gameLocations = [];
+let guestTeam = [];
+let guestScore = [];
+let homeTeam = [];
+let homeScore = [];
+let winPitch = [];
+let losePitch = [];
+let mvp = [];
+
+const renderGameDetails = (index) => {
+    const gameBattleContainer = document.createElement('div');
+    const gameGuestContainer = document.createElement('div');
+    const gameVs = document.createElement('div');
+    const gameHomeContainer = document.createElement('div');
+    gameBattleContainer.classList.add('battle-container');
+    gameGuestContainer.classList.add('score-board');
+    gameVs.classList.add('versus');
+    gameHomeContainer.classList.add('score-board');
+    const gameGuestTeam = document.createElement('div');
+    const gameGuestScore = document.createElement('div');
+    const gameHomeTeam = document.createElement('div');
+    const gameHomeScore = document.createElement('div');
+    gameGuestTeam.classList.add('team');
+    gameHomeTeam.classList.add('team');
+    gameGuestScore.classList.add('score');
+    gameHomeScore.classList.add('score');
+    const gameFinalInfo= document.createElement('div');
+    const gameWinPitch = document.createElement('div');
+    const gameLosePitch = document.createElement('div');
+    const gameMvp = document.createElement('div');
+    gameFinalInfo.classList.add('final-info');
+    gameWinPitch.classList.add('win-pitch');
+    gameLosePitch.classList.add('lose-pitch');
+
+    gameGuestTeam.textContent = guestTeam[index];
+    gameGuestScore.textContent = guestScore[index];
+    gameVs.textContent = 'VS.';
+    gameHomeTeam.textContent = homeTeam[index];
+    gameHomeScore.textContent = homeScore[index];
+    gameWinPitch.textContent = '勝投：'+winPitch[index];
+    gameLosePitch.textContent = '敗投：'+losePitch[index];
+    gameMvp.textContent = 'MVP：'+mvp[index];
+
+    gameGuestContainer.appendChild(gameGuestTeam);
+    gameGuestContainer.appendChild(gameGuestScore);
+    gameHomeContainer.appendChild(gameHomeTeam);
+    gameHomeContainer.appendChild(gameHomeScore);
+    gameFinalInfo.appendChild(gameWinPitch);
+    gameFinalInfo.appendChild(gameLosePitch);
+    gameFinalInfo.appendChild(gameMvp);
+    gameBattleContainer.appendChild(gameGuestContainer);
+    gameBattleContainer.appendChild(gameVs);
+    gameBattleContainer.appendChild(gameHomeContainer);
+    gameScoreInfo.appendChild(gameBattleContainer);
+    gameScoreInfo.appendChild(gameFinalInfo);
+
+}
+
 fetch(`api/getgame`).then(response => response.json()).then((data) => {
+    const date = new Date();
+    let gameFound = false;
+
     data.data.forEach(item =>{
         let date = new Date(item.date); 
         let weekday = ['日', '一', '二', '三', '四', '五', '六'];
@@ -355,48 +423,82 @@ fetch(`api/getgame`).then(response => response.json()).then((data) => {
             const gameCalendar = document.createElement('div');
             gameCalendar.classList.add('game-calendar');
             const gamePlayDate = document.createElement('div');
+            const gameTimeLocContainer = document.createElement('div');
+            gameTimeLocContainer.classList.add('game-time-loc');
             const gamePlayTime = document.createElement('div');
+            const gameLocation = document.createElement('div');
             const guestTeam = document.createElement('div');
             const homeTeam = document.createElement('div');
             gamePlayDate.textContent = gameDate;
             gamePlayDate.classList.add('game-play-date');
             gamePlayTime.textContent = gameTime;
             gamePlayTime.classList.add('game-play-time');
+            gameLocation.textContent = item.location;
+            gameLocation.classList.add('game-play-loc'); 
             guestTeam.textContent = item.guestTeam;
             guestTeam.classList.add('text');
             homeTeam.textContent = item.homeTeam;
             homeTeam.classList.add('text');
-            if (item.guestTeam.includes('Taipei') || item.homeTeam.includes('Taipei')) {
-                guestTeam.classList.add('text-color');
-                homeTeam.classList.add('text-color');
-            }
             gameCalendar.appendChild(gamePlayDate);
-            gameCalendar.appendChild(gamePlayTime);
+            gameTimeLocContainer.appendChild(gamePlayTime);
+            gameTimeLocContainer.appendChild(gameLocation);
+            gameCalendar.appendChild(gameTimeLocContainer);
             gameCalendar.appendChild(guestTeam);
             gameCalendar.appendChild(homeTeam);
-
             gameCalendarBox.appendChild(gameCalendar);
         }
 
-        if (date.getDate() === today.getDate()) {
+        const dateStr = date.toISOString().substring(0, 10);
+        const todayStr = today.toISOString().substring(0, 10);
+
+        if (dateStr == todayStr) { 
+            gameFound = true;
             noGame.style.display = 'none';
             gameDetail.style.display = 'block';
-            gameLocation.textContent = 'MLB'
-            guestTeam.textContent = item.guestTeam;
-            guestScore.textContent = item.guestScore;
-            homeTeam.textContent = item.homeTeam;
-            homeScore.textContent = item.homeScore;
-            guestPitch.textContent = '安打：'+ item.location; 
-            homePitch.textContent =  '安打：'+ item.homePitch; 
-            winPitch.textContent = '勝投：'+item.winPitch;
-            losePitch.textContent = '敗投：'+item.losePitch;
-            guestError.textContent = '失誤：'+item.mvp;
-            homeError.textContent = '失誤：'+item.guestPitch;
-        } else {
-            noGame.textContent = '今日無賽事';
-            noGame.style.display = 'block';
-            gameDetail.style.display = 'none';
-        }  
-    })
+            gameLocations.push(item.location + '('+gameTime+')');
+            guestTeam.push(item.guestTeam);
+            guestScore.push(item.guestScore);
+            homeTeam.push(item.homeTeam);
+            homeScore.push(item.homeScore);
+            winPitch.push(item.winPitch);
+            losePitch.push(item.losePitch);
+            mvp.push(item.mvp);
+        } 
+    });
+    if (gameFound) {
+        noGame.style.display = 'none';
+        gameDetail.style.display = 'block';
+
+        renderGameDetails(0);
+
+        gameLocations.forEach((local, index) => {
+            const gameLocation = document.createElement('div');
+            gameLocation.textContent = local;
+            gameLocation.classList.add('game-day-local');
+            gameLocation.setAttribute('id', `game-location-${index}`);
+            if (index === 0) {
+                gameLocation.classList.add('choose-local');
+            }
+            gameTimeLocal.appendChild(gameLocation);
+
+            const locationElement = document.querySelector(`#game-location-${index}`);
+            locationElement.addEventListener('click', () => {
+                gameLocations.forEach((local, index) => {
+                    const otherLocationElement = document.querySelector(`#game-location-${index}`);
+                    otherLocationElement.classList.remove('choose-local');
+                });
+                locationElement.classList.add('choose-local');
+                while (gameScoreInfo.hasChildNodes()){ 
+                    gameScoreInfo.removeChild(gameScoreInfo.firstChild);
+                }
+
+                renderGameDetails(index);
+            });
+        });    
+    } else {
+        noGame.textContent = '今日無賽事';
+        noGame.style.display = 'block';
+        gameDetail.style.display = 'none';
+    }
 })
 

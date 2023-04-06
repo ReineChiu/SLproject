@@ -9,6 +9,8 @@ player comparison
 scending 
 ![Alt text](static/images/scending.gif)
 
+[Database Schema](#database-schema)  
+
 [Backend Technique](#backend-technique)  
 - [Environment](#environment)  
 - [Database](#database)  
@@ -18,7 +20,13 @@ scending
 
 [Architecture](#architecture)  
 [Data Pipeline](#data-pipeline)  
-[Database Schema](#database-schema)  
+
+## Database Schema  
+1.The criteria for categorizing a database based on **<font >pitcher</font>** and **<font>fielder</font>**  statistics.  
+2.To meet the project requirements, add  **<font>index</font>**  to the player name and year columns for data searching purposes.  
+3.When writing player data to a database, avoid duplicates by using the player's defensive position, team, and date of birth as criteria for identification.
+![Alt text](static/images/sl-database.png)
+![Alt text](static/images/django-database.png)  
 
 ## Backend Technique
 
@@ -57,6 +65,3 @@ scending
 ## Data Pipeline 處理資料流程示意圖 
 ![Alt text](static/images/datapipline.png)  
 
-## Database Schema  
-![Alt text](static/images/django-database.png)  
-![Alt text](static/images/sl-database.png)

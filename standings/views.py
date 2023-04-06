@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
+
 from standings.models import Fielder, All_player, Pitcher, Game
 from django.db.models import F
 
+
+# Create your views here.
 
 def standings(request):
     return render(request, 'standings.html')
@@ -22,15 +25,14 @@ def getPlayerName(request):
         print(f'{e}:取得player資料發生錯誤')
         return HttpResponse('Player not found.')
 
-def checkPlayer(request):
+def checkPlayer(request,_id):
     try:
-        if request.method == 'GET':
-            _id = request.GET.get('num')
-            name = request.GET.get('name')
-
+        if request.method == 'POST':
+            name = request.POST.get('searchname')
+            _id = _id
             player = All_player.objects.filter(id=_id,player_name=name)
             checkplayer = tuple(player)
-
+            
             if checkplayer :
                 return JsonResponse({'ok':True})
             else:
@@ -59,48 +61,57 @@ def getRanking(request):
 def getGame(request):
     try:
         game_data = Game.objects.all().values()
-        return JsonResponse({'ok':True,'data':tuple(game_data)})
+        return JsonResponse({'ok':True,'data':list(game_data)})
     except Exception as e: 
         print(f'{e}:取得比賽資訊發生錯誤')
         return HttpResponse('game not found.')
       
 
-def Player(request):
-    player_id = request.GET.get('num')
-    if str(player_id) not in [str(y) for y in range(1, 2244)]:
-        return render(request, '404.html', status=404)
-    else:
-        return render(request, 'players.html', {'num':player_id})
+def Player(request, _id):
+    try:
+        player_id = int(_id)
+        if str(player_id) not in [str(y) for y in range(1, 2244)]:
+            return render(request, '404.html', status=404)
+        else:
+            return render(request, 'players.html')
+    except Exception as e: 
+        print(f'{e}:取得player資料發生錯誤')
+        return HttpResponse('Player not found.')
 
 def getPlayerData(request):
     try:
-        if request.method == 'GET':
-            _id = request.GET.get('num')
+        if request.method == 'POST':
+            _id = request.POST.get('playerId')
             player = All_player.objects.filter(id=_id).values('id','player_name','pos')
             player = tuple(player)
+            player_info = All_player.objects.filter(id=_id).values()
+            player_info = tuple(player_info)
             if player :
                 name = player[0]['player_name']
                 if player[0]['pos'] == "投手":
-                    data = All_player.objects.select_related("pitcher").filter(player_name=name).values(
-                        "player_name","army","num","pos","habits",'height','weight','birthday','debut','AQ',
-                        'Country','o_name','draft','retire','pitcher__team','pitcher__year',
-                        'pitcher__ERA','pitcher__GP','pitcher__GS','pitcher__GF','pitcher__CG','pitcher__SHO',
-                        'pitcher__Win','pitcher__Lose','pitcher__SV','pitcher__HLD','pitcher__PA','pitcher__PC',
-                        'pitcher__IP','pitcher__Hits','pitcher__HR','pitcher__Runs','pitcher__ER','pitcher__BB',
-                        'pitcher__IBB','pitcher__DB','pitcher__SO','pitcher__WP','pitcher__BK','pitcher__WHIP',
-                        'pitcher__GB_FB','pitcher__GB','pitcher__FB','pitcher__NO_BB','pitcher__BS','team__team_name'
-                        ).order_by(F('pitcher__year').desc(nulls_last=True))
-                    return JsonResponse({'ok':True, 'data':tuple(data)})
+                    data = Pitcher.objects.select_related("all_player", "team").filter(pitcher_name=name).values(
+                        "all_player__player_name","all_player__army","all_player__num","all_player__pos","all_player__habits",
+                        'all_player__height','all_player__weight','all_player__birthday','all_player__debut','all_player__AQ',
+                        'all_player__Country','all_player__o_name','all_player__draft','all_player__retire','year','ERA','GP',
+                        'GS','GF','CG','SHO','Win','Lose','SV','HLD','PA','PC','IP','Hits','HR','Runs','ER','BB','IBB','DB',
+                        'SO','WP','BK','WHIP','GB_FB','GB','FB','NO_BB','BS',"team__team_name"
+                        ).order_by(F('year').desc(nulls_last=True)).distinct()
+                    if data:
+                        return JsonResponse({'ok':True, 'data':tuple(data)})
+                    else:
+                        return JsonResponse({'info':True, 'data':player_info})
                 else:
-                    data = All_player.objects.select_related("fielder").filter(player_name=name).values(
-                        "player_name","army","num","pos","habits",'height','weight','birthday','debut','AQ',
-                        'Country','o_name','draft','retire','fielder__team','fielder__year','fielder__AVG',
-                        'fielder__GP','fielder__PA','fielder__AB','fielder__Runs','fielder__RBI','fielder__Hits',
-                        'fielder__one_base','fielder__two_base','fielder__three_base','fielder__HR','fielder__TB',
-                        'fielder__EBH','fielder__BB','fielder__IBB','fielder__DB','fielder__SO','fielder__DP',
-                        'fielder__SBH','fielder__SF','fielder__SB','fielder__CS','fielder__OBP','fielder__SLG',
-                        'fielder__OPS','fielder__GB_FB','fielder__GB','fielder__FB','fielder__SBP','team__team_name'
-                        ).order_by(F('fielder__year').desc(nulls_last=True)).distinct()
+                    data = Fielder.objects.select_related("all_player", "team").filter(fielder_name=name).values(
+                        "all_player__player_name","all_player__army","all_player__num","all_player__pos","all_player__habits",
+                        'all_player__height','all_player__weight','all_player__birthday','all_player__debut','all_player__AQ',
+                        'all_player__Country','all_player__o_name','all_player__draft','all_player__retire','year','AVG','GP',
+                        'PA','AB','Runs','RBI','Hits','one_base','two_base','three_base','HR','TB','EBH','BB','IBB','DB','SO',
+                        'DP','SBH','SF','SB','CS','OBP','SLG','OPS','GB_FB','GB','FB','SBP',"team__team_name"
+                        ).order_by(F('year').desc(nulls_last=True)).distinct()
+                    if data:
+                        return JsonResponse({'ok':True, 'data':tuple(data)})
+                    else:
+                        return JsonResponse({'info':True, 'data':player_info})
                     return JsonResponse({'ok':True, 'data':tuple(data)})
             else:
                 return JsonResponse({'error':True, 'message':'查無相關資料'})
